@@ -1,0 +1,815 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Брендинг · форма заказчика (вариант A)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#F5324B;--orange:#F0643C;--dark:#151515;--plum:#3E1A4E;
+        --lime:#C6E82E;--green:#3BB273;--blue:#3B5BDB;--mag:#E5197B;--yellow:#FFC531}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:'Manrope',system-ui,sans-serif;color:#1A1A1A;background:#e7e3dd}
+  h1,h2,h3,.uf{font-family:'Unbounded','Manrope',sans-serif}
+  .app{width:100%;max-width:480px;margin:0 auto;height:100dvh;background:#faf7f2;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.10)}
+  .screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;background:#faf7f2}
+  .screen::-webkit-scrollbar{width:0}
+  .view{display:none} .view.on{display:block}
+
+  /* ===== WELCOME ===== */
+  .welcome{min-height:100dvh;background:var(--red);color:#fff;padding:52px 26px 30px;display:flex;flex-direction:column;text-align:center;position:relative;overflow:hidden}
+  .welcome::after{content:"";position:absolute;right:-50px;bottom:120px;width:180px;height:180px;border:22px solid rgba(255,255,255,.12);border-radius:50%}
+  .welcome::before{content:"";position:absolute;left:-40px;top:-40px;width:150px;height:150px;background:rgba(255,255,255,.08);border-radius:50%}
+  .wbrand{font-family:'Unbounded';font-weight:800;font-size:15px;position:relative;z-index:2}
+  .wmid{margin:auto 0;position:relative;z-index:2}
+  .wwave{font-size:54px;margin-bottom:10px}
+  .welcome h1{font-family:'Unbounded';font-weight:800;font-size:32px;line-height:1.04;margin:0 0 12px}
+  .welcome .wsub{font-size:14.5px;line-height:1.5;opacity:.95;margin:0 auto;max-width:290px}
+  .wflow{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:22px;font-size:11.5px;font-weight:700}
+  .wflow span{background:rgba(255,255,255,.16);border-radius:20px;padding:6px 12px}
+  .wflow i{opacity:.6;font-style:normal;align-self:center}
+  .wbtn{position:relative;z-index:2;border:none;background:#151515;color:#fff;border-radius:18px;padding:17px;font-family:'Unbounded';font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+  .wbtn2{position:relative;z-index:2;display:block;margin-top:10px;border:2px solid rgba(255,255,255,.4);background:transparent;color:#fff;border-radius:18px;padding:14px;font-family:'Unbounded';font-weight:700;font-size:13px;cursor:pointer;text-decoration:none;text-align:center}
+
+  /* ===== HUB: выбор направления на welcome ===== */
+  .hubcards{margin-top:24px;display:flex;flex-direction:column;gap:11px;text-align:left}
+  .hcard{background:rgba(255,255,255,.13);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.22);border-radius:20px;padding:15px 16px;display:flex;gap:13px;align-items:center;cursor:pointer;transition:.15s;color:#fff;text-decoration:none}
+  .hcard:hover{background:rgba(255,255,255,.22)}
+  .hcard .hic{font-size:28px;flex-shrink:0}
+  .hcard .htx b{display:block;font-family:'Unbounded';font-weight:700;font-size:13.5px;margin-bottom:2px}
+  .hcard .htx span{display:block;font-size:11.5px;opacity:.85;line-height:1.35}
+  .hcard .har{margin-left:auto;font-size:18px;opacity:.7}
+
+  /* ===== BRIEF ===== */
+  .brief{padding:26px 16px 20px}
+  .btop{font-family:'Unbounded';font-weight:800;font-size:12px;color:var(--red);margin-bottom:6px}
+  .brief h2{font-family:'Unbounded';font-weight:800;font-size:22px;margin:0 0 4px;line-height:1.1}
+  .brief .bsub{font-size:13px;color:#7a736a;margin:0 0 20px;line-height:1.4}
+  .qblock{margin-bottom:20px}
+  .qlabel{font-size:13.5px;font-weight:800;margin-bottom:10px;display:flex;gap:7px;align-items:baseline}
+  .qnum{color:var(--red);font-family:'Unbounded';font-size:12px}
+  .qopt2{font-weight:600;font-size:11px;color:#b0a89e}
+  .qinput{width:100%;border:2px solid #efe9e1;border-radius:14px;padding:12px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff;margin-bottom:8px}
+  .qinput:focus{border-color:var(--red)}
+  textarea.qinput{min-height:66px;resize:vertical;line-height:1.4}
+  .qex{font-size:11.5px;color:#a89f96;margin:-3px 0 9px;line-height:1.35}
+  .qex b{color:#8a8177}
+  .bsec{font-family:'Unbounded';font-weight:700;font-size:12px;color:var(--red);text-transform:uppercase;letter-spacing:.04em;margin:24px 4px 14px;padding-top:14px;border-top:1px solid #efe9e1;display:flex;align-items:center;gap:7px}
+  .bsec:first-of-type{border-top:none;padding-top:0;margin-top:6px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:2px solid #efe9e1;background:#fff;border-radius:22px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;display:flex;gap:6px;align-items:center;transition:.14s;color:#333}
+  .chip.on{border-color:var(--red);background:#feebee;color:var(--red)}
+  .qcheck{display:flex;gap:9px;align-items:center;margin-top:4px;font-size:12.5px;color:#555;cursor:pointer;user-select:none}
+  .qbox{width:20px;height:20px;border-radius:6px;border:2px solid #d9d3ca;display:grid;place-items:center;color:#fff;font-size:12px}
+  .qcheck.on .qbox{background:var(--red);border-color:var(--red)}
+  .chipadd{display:flex;gap:6px;flex-basis:100%;margin-top:2px}
+  .chipadd input{flex:1;border:2px dashed #e0dad0;border-radius:20px;padding:9px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff}
+  .chipadd input:focus{border-color:var(--red);border-style:solid}
+  .chipadd button{border:none;background:#151515;color:#fff;border-radius:20px;width:40px;font-size:18px;font-weight:700;cursor:pointer}
+
+  /* ===== STEPS: hero + stepper ===== */
+  .hero{background:var(--red);color:#fff;padding:40px 20px 18px;border-radius:0 0 26px 26px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-30px;top:-26px;width:140px;height:140px;border:18px solid rgba(255,255,255,.14);border-radius:50%}
+  .hero .brand{font-family:'Unbounded';font-weight:800;font-size:14px;opacity:.95}
+  .steps{display:flex;gap:8px;margin-top:16px;position:relative;z-index:2}
+  .step{flex:1;text-align:center;cursor:pointer}
+  .step .bar{height:5px;border-radius:5px;background:rgba(255,255,255,.3)}
+  .step.done .bar,.step.cur .bar{background:#fff}
+  .step .st{font-size:10px;font-weight:700;margin-top:6px;opacity:.6}
+  .step.cur .st,.step.done .st{opacity:1}
+  .hero h2{font-family:'Unbounded';font-weight:800;font-size:23px;line-height:1.06;margin:16px 0 5px}
+  .hero p{font-size:12.5px;opacity:.92;margin:0;line-height:1.4}
+
+  .body{padding:16px 14px 100px}
+  .pane{display:none} .pane.on{display:block}
+  .sechint{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#a89f96;margin:6px 6px 10px}
+
+  .card{background:#fff;border-radius:20px;border:2px solid #efe9e1;margin-bottom:12px;overflow:hidden;cursor:pointer;transition:.18s;box-shadow:0 6px 18px -14px rgba(0,0,0,.3)}
+  .card.on{border-color:var(--c);box-shadow:0 12px 26px -14px var(--c)}
+  .crow{display:flex;align-items:center;gap:12px;padding:13px 14px}
+  .emo{width:44px;height:44px;flex:0 0 44px;border-radius:13px;display:grid;place-items:center;font-size:21px;background:var(--soft);transition:.18s}
+  .card.on .emo{background:var(--c)}
+  .tt{flex:1;min-width:0}
+  .tag{display:inline-block;font-size:9.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--c);background:var(--soft);padding:2px 7px;border-radius:6px;margin-bottom:3px}
+  .ctitle{font-family:'Unbounded';font-weight:700;font-size:14.5px;line-height:1.15}
+  .cone{font-size:12px;color:#7a736a;margin-top:2px;line-height:1.3}
+  .tick{width:26px;height:26px;flex:0 0 26px;border-radius:50%;border:2.5px solid #ded8cf;display:grid;place-items:center;color:#fff;font-size:14px;transition:.18s}
+  .card.on .tick{background:var(--c);border-color:var(--c)}
+  .exp{max-height:0;overflow:hidden;transition:max-height .35s ease}
+  .card.open .exp{max-height:680px}
+  .exp-in{padding:2px 14px 16px}
+  .kv{display:flex;gap:8px;font-size:12.5px;margin-bottom:8px;line-height:1.4}
+  .kv b{flex:0 0 48px;font-weight:800;color:var(--c)}
+  .exlabel{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#b0a89e;margin:14px 0 8px;display:flex;align-items:center;gap:7px}
+  .exlabel::before{content:"👀"}
+  .excap{font-size:11.5px;color:#8a8177;margin-top:8px;line-height:1.4;font-style:italic}
+  .price{display:inline-block;font-family:'Unbounded';font-weight:700;font-size:13px;margin-top:14px;background:#151515;color:#fff;padding:6px 12px;border-radius:10px}
+  .more{font-size:11.5px;font-weight:800;color:var(--c);padding:0 14px 13px;display:flex;align-items:center;gap:5px}
+  .more::after{content:"⌄";font-size:14px;transition:.3s}
+  .card.open .more::after{transform:rotate(180deg)}
+
+  .vis{border-radius:16px;overflow:hidden;border:1px solid #eee}
+  .v-meta{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#111;padding:5px;position:relative;aspect-ratio:1.6}
+  .v-meta .t{border-radius:9px;display:grid;place-items:center;font-size:26px}
+  .v-meta .badge{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#111;color:#fff;border:2px solid #fff;border-radius:50%;width:100px;height:100px;display:grid;place-items:center;text-align:center;line-height:1.1;box-shadow:0 0 0 5px #111}
+  .v-meta .badge small{font-size:9px;opacity:.7;display:block}
+  .v-meta .badge b{font-family:'Unbounded';font-size:14px}
+  .v-map{background:#fff;padding:12px;position:relative;aspect-ratio:1.6}
+  .v-map .lbl{position:absolute;font-size:9px;font-weight:700;color:#999}
+  .v-name{background:#151515;color:#fff;padding:18px 12px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+  .v-name .chip2{background:#2a2a2a;border-radius:9px;padding:8px 12px;font-family:'Unbounded';font-weight:700;font-size:13px;color:#fff}
+  .v-name .op{font-size:16px;opacity:.6}
+  .v-name .res{background:var(--red);border-radius:9px;padding:8px 14px;font-family:'Unbounded';font-weight:800;font-size:17px}
+  .v-logo{display:grid;grid-template-columns:repeat(3,1fr)}
+  .v-logo .cell{aspect-ratio:1.4;display:grid;place-items:center}
+  .qmark{font-family:'Unbounded';font-weight:800;font-size:15px;line-height:.86;text-align:center;padding:6px 7px;border-radius:4px}
+  .v-plat{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:#151515;padding:10px}
+  .v-plat .pc{color:#fff}
+  .v-plat .pc h5{font-family:'Unbounded';font-size:10px;margin:0 0 5px}
+  .v-plat .pc span{display:block;font-size:8.5px;background:rgba(255,255,255,.12);border-radius:5px;padding:3px 5px;margin-bottom:3px;line-height:1.2}
+  .v-style{background:#fff;padding:12px}
+  .v-style .sw{display:flex;gap:6px;margin-bottom:10px}
+  .v-style .sw i{width:30px;height:30px;border-radius:8px;display:block}
+  .v-style .type{display:flex;align-items:baseline;gap:10px}
+  .v-style .type b{font-family:'Unbounded';font-weight:800;font-size:22px}
+  .v-style .type span{font-family:'Manrope';font-weight:500;font-size:13px;color:#666}
+  .v-quote{background:#151515;color:#fff;padding:18px 16px 16px;position:relative}
+  .v-quote::before{content:"“";position:absolute;left:10px;top:0;font-size:44px;color:var(--red);font-family:Georgia,serif}
+  .v-quote p{margin:0;font-size:13.5px;line-height:1.4;font-weight:600;padding-left:14px}
+  .v-quote .cite{font-size:10px;opacity:.55;margin-top:8px;padding-left:14px}
+
+  .catwrap{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;margin:0 -2px}
+  .catwrap::-webkit-scrollbar{height:0}
+  .cat2{flex:0 0 auto;border:2px solid #efe9e1;background:#fff;border-radius:16px;padding:12px 14px;text-align:center;cursor:pointer;min-width:86px;transition:.15s}
+  .cat2.on{border-color:var(--red);background:#feebee}
+  .cat2 .ce{font-size:26px}
+  .cat2 .cn{font-size:11.5px;font-weight:800;margin-top:5px}
+  .cathint{font-size:12px;color:#8a8177;margin:4px 4px 12px;line-height:1.4}
+  .tierbox{font-size:12px;color:#5f5850;background:#fff;border:2px dashed #efe9e1;border-radius:14px;padding:10px 12px;margin:0 2px 12px;line-height:1.45}
+  .tierbox b{color:#151515}
+  .tierbox .tiernow{margin-top:6px;font-weight:800;color:var(--red)}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+  .med{border:2px solid #efe9e1;background:#fff;border-radius:16px;padding:13px 6px 11px;text-align:center;cursor:pointer;transition:.15s;position:relative}
+  .med.on{border-color:var(--red);background:#feebee}
+  .med .me{height:30px;display:flex;align-items:center;justify-content:center}
+  .med .me svg{width:27px;height:27px;stroke:#3a3a3a;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+  .med.on .me svg{stroke:var(--red)}
+  .med .mn{font-size:10.5px;font-weight:700;margin-top:7px;line-height:1.15;color:#333}
+  .med .mtick{position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;display:none;place-items:center}
+  .med.on .mtick{display:grid}
+  .med .mrm{position:absolute;top:6px;right:6px;width:19px;height:19px;border-radius:50%;background:#151515;color:#fff;font-size:11px;display:grid;place-items:center;cursor:pointer}
+  .addwrap{margin-top:18px}
+  .addrow{display:flex;gap:8px}
+  .addrow input{flex:1;border:2px solid #efe9e1;border-radius:14px;padding:12px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff}
+  .addrow input:focus{border-color:var(--red)}
+  .addrow button{border:none;background:#151515;color:#fff;border-radius:14px;padding:0 16px;font-family:'Unbounded';font-weight:700;font-size:12.5px;cursor:pointer;white-space:nowrap}
+
+  /* footer nav */
+  .nav{position:absolute;left:0;right:0;bottom:0;z-index:30;padding:7px 14px 16px;background:linear-gradient(#faf7f200,#faf7f2 20%)}
+  .navsum{font-size:12.5px;font-weight:800;color:#151515;text-align:center;padding:6px 0 9px}
+  .navsum span{color:var(--red)}
+  .navrow{display:flex;gap:10px;align-items:center}
+  .back{border:2px solid #ded8cf;background:#fff;border-radius:16px;padding:15px 18px;font-family:'Unbounded';font-weight:700;font-size:13px;cursor:pointer;color:#555}
+  .go{flex:1;border:none;border-radius:16px;padding:16px 18px;font-family:'Unbounded';font-weight:700;font-size:14px;color:#fff;background:var(--red);display:flex;justify-content:space-between;align-items:center;cursor:pointer;box-shadow:0 14px 30px -14px var(--red)}
+  .go .pill{background:rgba(255,255,255,.25);border-radius:20px;padding:4px 11px;font-size:12.5px}
+  .go.send{background:#151515;box-shadow:0 14px 30px -14px #151515}
+
+  /* ===== MODAL (котик) ===== */
+  .modal{position:absolute;inset:0;z-index:60;background:rgba(20,6,12,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:26px}
+  .modal.on{display:flex}
+  .mcard{background:#fff;border-radius:28px;padding:26px 22px 24px;text-align:center;width:100%;box-shadow:0 40px 80px -20px #000;animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .catsvg{width:140px;height:140px;margin:0 auto;display:block;animation:bob 2.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+  .mcard h3{font-family:'Unbounded';font-weight:800;font-size:20px;margin:12px 0 8px}
+  .mcard p{font-size:13.5px;color:#7a736a;line-height:1.5;margin:0 auto;max-width:250px}
+  .dots{margin-top:16px;font-family:'Unbounded';font-weight:800;letter-spacing:4px;color:var(--red);font-size:22px}
+  .dots span{animation:blink 1.4s infinite}
+  .dots span:nth-child(2){animation-delay:.2s} .dots span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+  .mclose{margin-top:18px;border:2px solid #ded8cf;background:#fff;border-radius:14px;padding:12px 20px;font-family:'Unbounded';font-weight:700;font-size:12.5px;cursor:pointer;color:#555}
+
+  .foot{text-align:center;color:#8a7f88;font-size:12px;margin-top:22px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.5}
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="screen" id="scr">
+
+      <!-- ===== WELCOME ===== -->
+      <div class="view on" id="welcome">
+        <div class="welcome">
+          <div class="wbrand">atmosfera</div>
+          <div class="wmid">
+            <div class="wwave">👋</div>
+            <h1>Привет!<br>С чем поможем?</h1>
+            <p class="wsub">Выберите, что нужно вашему бизнесу — дальше короткий бриф на пару минут.</p>
+            <div class="hubcards">
+              <div class="hcard" id="toBrief"><div class="hic">🎨</div><div class="htx"><b>Брендинг</b><span>Логотип, фирстиль, упаковка, мерч</span></div><div class="har">→</div></div>
+              <a class="hcard" href="brief-site.html"><div class="hic">🌐</div><div class="htx"><b>Сайт</b><span>Лендинг, корпоративный, магазин</span></div><div class="har">→</div></a>
+              <a class="hcard" href="brief-crm.html"><div class="hic">⚙️</div><div class="htx"><b>CRM-система</b><span>Своя система под ваш бизнес</span></div><div class="har">→</div></a>
+              <a class="hcard" href="audit.html"><div class="hic">🔎</div><div class="htx"><b>Аудит бренда</b><span>Разбор упаковки бизнеса — бесплатно</span></div><div class="har">→</div></a>
+            </div>
+          </div>
+          <div class="wflow"><span>📝 Бриф</span><i>→</i><span>🧮 Оценка</span><i>→</i><span>📄 Предложение</span></div>
+        </div>
+      </div>
+
+      <!-- ===== BRIEF ===== -->
+      <div class="view" id="brief">
+        <div class="brief">
+          <div class="btop">📝 Бриф на разработку бренда</div>
+          <h2>Расскажите о бренде</h2>
+          <p class="bsub">Чем подробнее ответите — тем точнее попадём в ваш бренд. Заполняйте вдумчиво 🙂</p>
+
+          <div class="bsec">🏢 О компании</div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">1</span> Как называется ваша компания?</div>
+            <input class="qinput" id="bBrand" placeholder="Название">
+            <div class="qcheck" data-check><div class="qbox">✓</div> Названия ещё нет — нужен нейминг</div>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">2</span> Имя и номер телефона</div>
+            <input class="qinput" id="bName" placeholder="Имя">
+            <input class="qinput" id="bContact" placeholder="Телефон или Telegram">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">3</span> Опишите продукт / услугу</div>
+            <div class="qex"><b>Пример:</b> магазин полезных продуктов без глютена · женская одежда из натуральных тканей.</div>
+            <textarea class="qinput" placeholder="Что вы предлагаете"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">4</span> Сфера бизнеса</div>
+            <div class="chips" data-group="sphere" data-single>
+              <div class="chip">🍽️ Общепит</div><div class="chip">🛍️ Магазин</div><div class="chip">💇 Бьюти</div>
+              <div class="chip">🚗 Авто</div><div class="chip">🏥 Медицина</div><div class="chip">🏨 Отель</div>
+              <div class="chip">💼 Услуги</div>
+            </div>
+          </div>
+
+          <div class="bsec">🎯 Аудитория и продукт</div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">5</span> Кто ваш потребитель?</div>
+            <div class="qex"><b>Пол, возраст, сфера.</b> Пример: женщины, мамы 20–30 · мужчины 35+ с доходом выше среднего.</div>
+            <textarea class="qinput" placeholder="Опишите покупателей"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">6</span> Какие проблемы ЦА решает ваш продукт?</div>
+            <div class="qex">Для чего он нужен потребителям — быт, эмоции, ежедневное потребление?</div>
+            <textarea class="qinput" placeholder="Зачем он им"></textarea>
+          </div>
+
+          <div class="bsec">⚔️ Ситуация и конкуренты</div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">7</span> С какими сложностями сталкивается бренд?</div>
+            <div class="qex">Какую проблему мы можем решить? Пример: дизайн устарел · мало покупателей.</div>
+            <textarea class="qinput" placeholder="Что не так сейчас"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">8</span> Что беспокоит вашего потребителя?</div>
+            <div class="qex">Негативные отзывы, неудобства. Пример: платная доставка, долгий ответ.</div>
+            <textarea class="qinput" placeholder="Боли клиентов"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">9</span> Основные конкуренты — что нравится / нет?</div>
+            <textarea class="qinput" placeholder="Списком: кто и чем цепляет или раздражает"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">10</span> Чем вы отличаетесь от конкурентов?</div>
+            <div class="qex">Пример: бесплатная доставка, авторские технологии, сервис.</div>
+            <textarea class="qinput" placeholder="Ваши сильные стороны"></textarea>
+          </div>
+
+          <div class="bsec">💎 Позиционирование</div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">11</span> Ценовой сегмент</div>
+            <div class="chips" data-group="price" data-single>
+              <div class="chip">Эконом</div><div class="chip">Средний</div><div class="chip">Выше среднего</div><div class="chip">Люкс</div>
+            </div>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">12</span> География бренда</div>
+            <input class="qinput" placeholder="Где развиваете — город / вся Россия">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">13</span> Характер бренда <span class="qopt2">можно несколько</span></div>
+            <div class="qex">Если бы бренд был человеком — какой он?</div>
+            <div class="chips" data-group="mood">
+              <div class="chip">Стильный</div><div class="chip">Надёжный</div><div class="chip">Смелый</div>
+              <div class="chip">Премиум</div><div class="chip">Дружелюбный</div><div class="chip">Минимализм</div>
+              <div class="chip">Женственный</div><div class="chip">Яркий</div>
+            </div>
+          </div>
+
+          <div class="bsec">🎨 Визуал</div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">14</span> Пожелания по цветам / стилистике</div>
+            <input class="qinput" placeholder="Напр. тёмно-синий + серебро">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">15</span> Каких цветов / приёмов избегать?</div>
+            <input class="qinput" placeholder="Что точно не заходит">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">16</span> Референсы — что нравится / не нравится</div>
+            <div class="qex">Названия или ссылки. Пример: нравится шрифт Prada, Louis Vuitton.</div>
+            <textarea class="qinput" placeholder="Примеры брендов / стилей"></textarea>
+          </div>
+
+          <div class="bsec">🏁 Результат</div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">17</span> Каким видите итог нашей работы?</div>
+            <div class="qex">Пример: хочу, чтобы продукт привлекал внимание на полке и вызывал эмоции.</div>
+            <textarea class="qinput" placeholder="Ваш ожидаемый результат"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">18</span> Бюджет на разработку</div>
+            <input class="qinput" placeholder="Сумма от и до">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">19</span> Желаемый срок</div>
+            <input class="qinput" placeholder="Когда нужно / крайний срок">
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEPS ===== -->
+      <div class="view" id="steps">
+        <div class="hero">
+          <div class="brand">atmosfera · брендинг</div>
+          <div class="steps">
+            <div class="step cur" data-s="0"><div class="bar"></div><div class="st">1 · Маркетинг</div></div>
+            <div class="step" data-s="1"><div class="bar"></div><div class="st">2 · Визуал</div></div>
+            <div class="step" data-s="2"><div class="bar"></div><div class="st">3 · Носители</div></div>
+          </div>
+          <h2 id="hTitle">Маркетинг и анализ</h2>
+          <p id="hSub">С чего начинается бренд — стратегия и смыслы.</p>
+        </div>
+        <div class="body">
+          <div class="pane on" id="p0"></div>
+          <div class="pane" id="p1"></div>
+          <div class="pane" id="p2">
+            <div class="sechint">Ваша сфера — покажем нужные носители</div>
+            <div class="tierbox" id="tierBox"></div>
+            <div class="catwrap" id="cats"></div>
+            <div class="cathint" id="cathint">Выберите категорию выше 👆</div>
+            <div class="grid" id="meds"></div>
+            <div class="addwrap">
+              <div class="sechint">Нет нужного? Впишите свой носитель</div>
+              <div class="addrow">
+                <input id="medInput" placeholder="Напр. «меню для кальяна»" autocomplete="off">
+                <button id="medAdd">Добавить</button>
+              </div>
+              <div class="grid" id="customGrid" style="margin-top:10px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="nav" id="nav" style="display:none">
+      <div class="navsum" id="navsum">Пока ничего не выбрано</div>
+      <div class="navrow">
+        <button class="back" id="back" style="display:none">← Назад</button>
+        <button class="go" id="go"><span id="goTxt">Далее →</span><span class="pill" id="cnt">0</span></button>
+      </div>
+    </div>
+
+    <!-- ===== MODAL котик ===== -->
+    <div class="modal" id="modal">
+      <div class="mcard">
+        <svg class="catsvg" viewBox="0 0 140 150">
+          <path d="M40 46 L34 15 L64 38 Z" fill="#F4A259"/><path d="M100 46 L106 15 L76 38 Z" fill="#F4A259"/>
+          <path d="M43 42 L41 25 L58 38 Z" fill="#F9CBA4"/><path d="M97 42 L99 25 L82 38 Z" fill="#F9CBA4"/>
+          <ellipse cx="70" cy="70" rx="43" ry="39" fill="#F4A259"/>
+          <path d="M70 34 v9 M60 35 l2 8 M80 35 l-2 8" stroke="#E0863A" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <ellipse cx="45" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/><ellipse cx="95" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/>
+          <path d="M50 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <path d="M78 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <path d="M66 76 h8 l-4 4.5 z" fill="#E76F8E"/>
+          <path d="M70 80 q-5 6 -11 3 M70 80 q5 6 11 3" stroke="#4A2C18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M30 68 h16 M28 76 h18 M110 68 h-16 M112 76 h-18" stroke="#C8935C" stroke-width="2" stroke-linecap="round"/>
+          <rect x="50" y="108" width="40" height="28" rx="4" fill="#fff" stroke="#E0863A" stroke-width="2.4"/>
+          <line x1="56" y1="116" x2="84" y2="116" stroke="#F4A259" stroke-width="2"/><line x1="56" y1="122" x2="84" y2="122" stroke="#F4A259" stroke-width="2"/><line x1="56" y1="128" x2="76" y2="128" stroke="#F4A259" stroke-width="2"/>
+          <ellipse cx="48" cy="118" rx="9" ry="7" fill="#F4A259"/><ellipse cx="92" cy="118" rx="9" ry="7" fill="#F4A259"/>
+        </svg>
+        <h3>Заявка отправлена!</h3>
+        <p>Ваше коммерческое предложение уже готовится — скоро свяжемся. Спасибо, что выбрали нас 🐾</p>
+        <div class="dots"><span>●</span><span>●</span><span>●</span></div>
+        <button class="mclose" id="mclose">Хорошо</button>
+      </div>
+    </div>
+  </div>
+
+
+<script>
+const V = {
+  map:`<div class="vis v-map"><svg viewBox="0 0 200 120" width="100%">
+      <line x1="10" y1="60" x2="190" y2="60" stroke="#e5e5e5"/><line x1="100" y1="8" x2="100" y2="112" stroke="#e5e5e5"/>
+      <circle cx="72" cy="78" r="6" fill="#c9c9c9"/><circle cx="120" cy="72" r="6" fill="#c9c9c9"/><circle cx="138" cy="90" r="6" fill="#c9c9c9"/>
+      <circle cx="58" cy="52" r="6" fill="#c9c9c9"/><circle cx="150" cy="55" r="6" fill="#c9c9c9"/><circle cx="112" cy="94" r="6" fill="#c9c9c9"/>
+      <circle cx="52" cy="30" r="15" fill="none" stroke="#3BB273" stroke-width="2.5" stroke-dasharray="4 3"/>
+      <text x="52" y="33" font-size="8" fill="#3BB273" text-anchor="middle" font-weight="bold">вы</text></svg>
+      <span class="lbl" style="left:12px;top:8px">гедонисты</span><span class="lbl" style="right:12px;top:8px">независимые</span>
+      <span class="lbl" style="left:12px;bottom:8px">эстеты</span><span class="lbl" style="right:12px;bottom:8px">традиционалисты</span></div>`,
+  quote:(t,c)=>`<div class="vis v-quote"><p>${t}</p><div class="cite">${c}</div></div>`,
+  meta:`<div class="vis v-meta">
+      <div class="t" style="background:#2a1020">🎧</div><div class="t" style="background:#3a1414">🍸</div>
+      <div class="t" style="background:#241030">🎉</div><div class="t" style="background:#3a2410">💿</div>
+      <div class="badge"><span><small>метафора</small><b>МИКСИНГ</b></span></div></div>`,
+  plat:`<div class="vis v-plat">
+      <div class="pc"><h5 style="color:var(--green)">Ценности</h5><span>Свобода</span><span>Азарт</span><span>Общение</span></div>
+      <div class="pc"><h5 style="color:var(--yellow)">Характер</h5><span>Смелый</span><span>Игривый</span><span>Живой</span></div>
+      <div class="pc"><h5 style="color:var(--orange)">Миссия</h5><span>Объединять людей</span></div>
+      <div class="pc"><h5 style="color:var(--red)">Видение</h5><span>Культовый у молодёжи</span></div></div>`,
+  name:`<div class="vis v-name"><span class="chip2">CUBE 🧊</span><span class="op">+</span><span class="chip2">MIX 🎚️</span><span class="op">=</span><span class="res">QUBIX</span></div>`,
+  slogan:`<div class="vis v-quote"><p>Вкус, который собирается<br>по граням твоего настроения.</p><div class="cite">слоган · дескриптор</div></div>`,
+  tone:`<div class="vis v-quote"><p>Мы на «ты», без пафоса.<br>Смело, коротко, с искрой.</p><div class="cite">tone of voice · так говорит бренд</div></div>`,
+  logo:(()=>{const c=[['#C6E82E','#3B5BDB'],['#3BB273','#3E1A4E'],['#3B5BDB','#C6E82E'],['#F0643C','#C6E82E'],['#F5324B','#C6E82E'],['#E5197B','#3BB273']];
+      return `<div class="vis v-logo">`+c.map(([bg,fg])=>`<div class="cell" style="background:${bg}"><span class="qmark" style="background:${fg};color:${bg}">QU<br>BIX</span></div>`).join('')+`</div>`})(),
+  style:`<div class="vis v-style"><div class="sw"><i style="background:var(--red)"></i><i style="background:var(--orange)"></i><i style="background:var(--lime)"></i><i style="background:var(--blue)"></i><i style="background:var(--mag)"></i><i style="background:#151515"></i></div>
+      <div class="type"><b>Aa</b><span>Unbounded · Manrope<br>жирные заголовки, чистый текст</span></div></div>`,
+  pack:`<div class="vis" style="background:#fff;padding:8px"><img src="branding-bottles.jpg" alt="Дизайн упаковки QUBIX" loading="lazy" decoding="async" style="width:100%;display:block;border-radius:10px"></div>`,
+  retail:`<div class="vis" style="background:#151515;color:#fff;padding:14px">`+
+    [['Формат','какой формат точки и её роль (модуль / островок)'],['Метафора','идея и характер пространства'],['Планировка','зонирование и маршрут клиента'],['Материалы','отделка, витрины, оборудование'],['Визуализация','3D-картинка будущей точки']]
+    .map((r,i)=>`<div style="display:flex;gap:10px;align-items:flex-start;${i?'margin-top:9px':''}"><div style="flex:0 0 20px;height:20px;border-radius:6px;background:#0F9D8E;color:#fff;font-family:'Unbounded';font-weight:700;font-size:10px;display:grid;place-items:center">${i+1}</div><div><div style="font-weight:800;font-size:12.5px">${r[0]}</div><div style="font-size:11px;color:#9a9a9a;line-height:1.3">${r[1]}</div></div></div>`).join('')+
+    `</div>`,
+  consumer:`<div class="vis" style="background:#151515;color:#fff;padding:14px">`+
+    [['Форматы','где говорим: соцсети, наружка, digital'],['Метафора','идея и образ кампании'],['Сообщение','ключевой посыл и tone of voice'],['Механики','акции, коллабы, спецпроекты, ивенты'],['Визуализация','примеры макетов и раскадровка']]
+    .map((r,i)=>`<div style="display:flex;gap:10px;align-items:flex-start;${i?'margin-top:9px':''}"><div style="flex:0 0 20px;height:20px;border-radius:6px;background:#F0643C;color:#fff;font-family:'Unbounded';font-weight:700;font-size:10px;display:grid;place-items:center">${i+1}</div><div><div style="font-weight:800;font-size:12.5px">${r[0]}</div><div style="font-size:11px;color:#9a9a9a;line-height:1.3">${r[1]}</div></div></div>`).join('')+
+    `</div>`,
+  book:`<div class="vis" style="background:#151515;color:#fff;padding:14px">`+
+    [['Логотип','версии, охранное поле, как нельзя'],['Цвета','палитра и коды для печати и экрана'],['Шрифты','какие и где использовать'],['Носители','визитка, вывеска, упаковка, соцсети'],['Исходники','файлы для дизайнеров и типографии']]
+    .map((r,i)=>`<div style="display:flex;gap:10px;align-items:flex-start;${i?'margin-top:9px':''}"><div style="flex:0 0 20px;height:20px;border-radius:6px;background:#3B5BDB;color:#fff;font-family:'Unbounded';font-weight:700;font-size:10px;display:grid;place-items:center">${i+1}</div><div><div style="font-weight:800;font-size:12.5px">${r[0]}</div><div style="font-size:11px;color:#9a9a9a;line-height:1.3">${r[1]}</div></div></div>`).join('')+
+    `</div>`,
+  merch:`<div class="vis" style="background:#151515;color:#fff;padding:12px;display:flex;flex-wrap:wrap;gap:7px">`+
+    [['👕','Футболки / худи'],['🛍️','Шопперы'],['☕','Посуда'],['🧢','Кепки'],['✨','Стикеры'],['🎁','Сувениры']]
+    .map(m=>`<span style="background:rgba(255,255,255,.1);border-radius:20px;padding:6px 11px;font-size:12px;font-weight:600">${m[0]} ${m[1]}</span>`).join('')+
+    `</div>`,
+};
+
+// Цены — из прайса калькулятора CRM (branding_services), грузятся при открытии страницы.
+// svc — строки калькулятора [группа, название]; название null = первая строка группы (базовая опция).
+// price — запасная цена на случай, если прайс не загрузился.
+const STRAT = [
+ {e:'🔍',c:'#8B5CF6',soft:'#f1ecfb',tag:'Анализ',n:'Исследование и анализ',one:'Продукт, конкуренты, аудитория, тренды',
+  what:'Изучаем продукт, ЦА, тренды и конкурентов.',why:'Найти свободную нишу и не повторить чужих ошибок.',vis:V.map,cap:'Карта конкурентов: где толпа — и где свободно встать вам.',price:'от 70 000 ₽',
+  svc:[['research','Изучение продукта'],['research','Изучение конкурентов'],['research','Изучение ЦА'],['research','Изучение трендов']]},
+ {e:'💡',c:'#F0643C',soft:'#fdeee7',tag:'Стратегия',n:'Инсайт',one:'Настоящая правда о клиенте',
+  what:'Глубинная потребность, из которой растёт бренд.',why:'Чтобы бренд попадал в живую эмоцию.',vis:V.quote('Собираемся с друзьями — вкусы у всех разные. Хочется, чтобы каждому подошло.','инсайт аудитории'),cap:'Одна честная фраза, на которой держится весь бренд.',price:'от 20 000 ₽',
+  svc:[['research','Разработка инсайта']]},
+ {e:'🎯',c:'#3B5BDB',soft:'#e9edfb',tag:'Стратегия',n:'Позиционирование',one:'За что вас выберут',
+  what:'Место бренда в голове клиента — отличие одной фразой.',why:'Чтобы вас выбирали, а не путали с конкурентами.',vis:V.quote('Оригинальные настойки, что объединяют людей через микс вкусов, эмоций и эстетики.','формула позиционирования'),cap:'',price:'от 35 000 ₽',
+  svc:[['research','Разработка позиционирования']]},
+ {e:'🌀',c:'#F5324B',soft:'#feebee',tag:'Стратегия',n:'Метафора',one:'Один образ на весь бренд',
+  what:'Ассоциация-мостик: с чем бренд сравнивается, задаёт язык.',why:'Делает бренд понятным и запоминающимся.',vis:V.meta,cap:'«Миксинг»: диджей сводит треки — бренд сводит вкусы.',price:'от 30 000 ₽',
+  svc:[['research','Разработка метафоры бренда']]},
+ {e:'🧱',c:'#3BB273',soft:'#e6f6ee',tag:'Стратегия',n:'Платформа бренда',one:'Ценности, характер, миссия',
+  what:'Фундамент: во что бренд верит и какой у него характер.',why:'Чтобы все коммуникации звучали в одном тоне.',vis:V.plat,cap:'Ценности → характер → миссия → видение.',price:'от 40 000 ₽',
+  svc:[['research','Формирование бренд-платформы']]},
+];
+const VISUAL = [
+ {e:'✏️',c:'#F0643C',soft:'#fdeee7',tag:'Вербальное',n:'Нейминг',one:'Имя со смыслом',
+  what:'Придумываем название и объясняем его логику.',why:'Имя — первое, что клиент видит и произносит.',vis:V.name,cap:'CUBE (форма-куб) + MIX (смелый вкус) = QUBIX.',price:'от 40 000 ₽',
+  svc:[['research','Нейминг до 5 вариантов']]},
+ {e:'💬',c:'#E5197B',soft:'#fce7f1',tag:'Вербальное',n:'Слоган / дескриптор',one:'Короткая фраза бренда',
+  what:'Слоган и подпись, что цепляют суть.',why:'Одна строка, которую запоминают и повторяют.',vis:V.slogan,cap:'',price:'от 15 000 ₽',
+  svc:[['research','Слоган / дескриптор']]},
+ {e:'🗣️',c:'#8B5CF6',soft:'#f1ecfb',tag:'Вербальное',n:'Tone of Voice',one:'Как бренд говорит',
+  what:'Голос бренда: стиль текстов, словарь, интонация.',why:'Чтобы бренд везде звучал узнаваемо.',vis:V.tone,cap:'',price:'от 15 000 ₽',
+  svc:[['research','Tone of Voice (голос бренда)']]},
+ {e:'🎨',c:'#F5324B',soft:'#feebee',tag:'Визуал',n:'Логотип и фирменный стиль',one:'Знак, цвета, шрифты, паттерны',
+  what:'Логотип и его версии + дизайн-система: палитра, типографика, графические элементы.',why:'Чтобы вас узнавали за секунду — и везде одинаково.',vis:V.logo+'<div style="height:8px"></div>'+V.style,cap:'Знак QUBIX в ярких сочетаниях + палитра и шрифты, из которых собирается всё оформление.',price:'от 50 000 ₽',
+  svc:[['concepts',null]]},
+ {e:'📘',c:'#3B5BDB',soft:'#e9edfb',tag:'Документ',n:'Брендбук',one:'Все правила бренда в одном файле',
+  what:'Вёрстка брендбука: как пользоваться логотипом, цветами, шрифтами и носителями.',why:'Любой дизайнер или типография сделают всё в вашем стиле — без созвонов и угадывания.',vis:V.book,cap:'Готовый PDF, который можно отдать любому подрядчику.',price:'от 30 000 ₽',
+  svc:[['guide','до 20 стр.']]},
+ {e:'📦',c:'#F0643C',soft:'#fdeee7',tag:'Продукт',n:'Дизайн упаковки',one:'Как продукт выглядит вживую',
+  what:'Форм-фактор, этикетка, бутылка / коробка.',why:'Упаковка продаёт — цепляет за первые 2 секунды.',vis:V.pack,cap:'Формфактор QUBIX: чёткая «кубическая» бутылка 180 / 250 / 500 мл.',price:'от 30 000 ₽',
+  svc:[['extra','Дизайн упаковки / этикетки']]},
+ {e:'🏬',c:'#0F9D8E',soft:'#e2f5f2',tag:'Коммуникация',n:'Ретейл-коммуникация',one:'Как бренд живёт в точках продаж',
+  what:'Присутствие в рознице: формат (модуль / pop-up островок), метафора пространства, планировка, материалы, 3D-визуализация.',why:'Продукт заметен на полке и в точке — выделяется и продаёт.',vis:V.retail,cap:'5 этапов: Формат → Метафора → Планировка → Материалы → Визуализация.',price:'от 50 000 ₽',
+  svc:[['extra','Ретейл-коммуникация']]},
+ {e:'📣',c:'#F0643C',soft:'#fdeee7',tag:'Коммуникация',n:'Потребительская коммуникация',one:'Как бренд говорит с покупателем',
+  what:'Коммуникация с потребителем вне точки продаж: форматы (соцсети, наружка, digital), метафора кампании, ключевое сообщение, механики (акции, коллабы, ивенты), визуализация макетов.',why:'Бренд узнают, о нём говорят, к нему возвращаются.',vis:V.consumer,cap:'От форматов и сообщения до механик и готовых макетов.',price:'от 30 000 ₽',
+  svc:[['extra','Потребительская коммуникация']]},
+ {e:'👕',c:'#E5197B',soft:'#fce7f1',tag:'Мерч',n:'Мерч',one:'Брендированные вещи и сувениры',
+  what:'Дизайн мерча: футболки / худи, шопперы, посуда, кепки, стикеры, подарочные сувениры.',why:'Мерч с логотипом — ходячая реклама и любовь аудитории.',vis:V.merch,cap:'Шопперы, посуда, одежда, стикеры, сувениры в фирменном стиле.',price:'от 30 000 ₽',
+  svc:[['extra','Мерч']]},
+];
+
+const CARRIERS = {
+  'Общепит':{e:'🍽️',items:[['','Вывеска'],['','Меню / меню-борд'],['','Винная / барная карта'],['','Стаканы to-go'],['','Крафт-пакеты'],['','Упаковка (боксы)'],['','Штендер'],['','Тейбл-тент'],['','Костеры'],['','Ценники'],['','Наклейки'],['','Форма персонала'],['','Папка для счёта'],['','Салфетки с лого'],['','Подача / посуда'],['','Навигация в зале'],['','Карта лояльности'],['','Подарочный сертификат'],['','Меловые доски'],['','Витрина'],['','Флаеры'],['','Соцсети']]},
+  'Магазин одежды':{e:'🛍️',items:[['','Вывеска'],['','Витрина'],['','Фирменные пакеты'],['','Бирки / ярлыки'],['','Ценники'],['','Примерочная'],['','Форма продавцов'],['','POS-стойки'],['','Карта лояльности'],['','Упаковочная бумага'],['','Соцсети']]},
+  'Продуктовый':{e:'🛒',items:[['','Вывеска'],['','Ценники'],['','Пакеты'],['','Навигация по отделам'],['','Промо-плакаты'],['','Стоп-шелфы'],['','Форма'],['','Соцсети']]},
+  'Онлайн-магазин':{e:'💻',items:[['','Логотип для сайта'],['','Коробки'],['','Открытки-вкладыши'],['','Наклейки на посылки'],['','Скотч с лого'],['','Упаковка заказа'],['','Email-шаблоны'],['','Карточки на маркетплейсе'],['','Соцсети']]},
+  'Салон красоты':{e:'💇',items:[['','Вывеска'],['','Прайс-лист'],['','Визитки'],['','Подарочный сертификат'],['','Форма мастеров'],['','Навигация'],['','Наклейки / бирки'],['','Упаковка'],['','Соцсети']]},
+  'Барбершоп':{e:'💈',items:[['','Вывеска / неон'],['','Прайс'],['','Визитки'],['','Карта клиента'],['','Фартуки барберов'],['','Плакаты'],['','Наклейки'],['','Соцсети']]},
+  'Фитнес / Спортзал':{e:'🏋️',items:[['','Вывеска'],['','Навигация по залу'],['','Клубные карты'],['','Абонементы'],['','Форма тренеров'],['','Мерч (бутылки, полотенца)'],['','Мотивац. плакаты'],['','Соцсети']]},
+  'Клиника / Медцентр':{e:'🏥',items:[['','Вывеска'],['','Навигация / таблички'],['','Визитки'],['','Бланки / карта пациента'],['','Бейджи'],['','Форма персонала'],['','Буклеты услуг'],['','Соцсети']]},
+  'Стоматология':{e:'🦷',items:[['','Вывеска'],['','Визитки'],['','Памятка пациенту'],['','Бейджи'],['','Форма'],['','Навигация'],['','Сертификаты'],['','Соцсети']]},
+  'Автосервис':{e:'🚗',items:[['','Вывеска'],['','Наружная навигация'],['','Визитки'],['','Брелоки / наклейки'],['','Форма механиков'],['','Заказ-наряд бланк'],['','Прайс'],['','Соцсети']]},
+  'Цветочный':{e:'🌸',items:[['','Вывеска'],['','Упаковка букетов'],['','Открытки / бирки'],['','Пакеты'],['','Ценники'],['','Наклейки'],['','Форма'],['','Соцсети']]},
+  'Отель / Хостел':{e:'🏨',items:[['','Вывеска'],['','Навигация'],['','Ключ-карты'],['','Таблички на двери'],['','Папка гостя'],['','Форма персонала'],['','Косметика / аменити'],['','Соцсети']]},
+};
+// сфера из брифа → категория носителей
+const SPHERE2CAT={'Общепит':'Общепит','Магазин':'Магазин одежды','Бьюти':'Салон красоты','Авто':'Автосервис','Медицина':'Клиника / Медцентр','Отель':'Отель / Хостел'};
+
+/* иконки носителей */
+const ICONS={
+  sign:'<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="9" rx="1.5"/><line x1="12" y1="13" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>',
+  stand:'<svg viewBox="0 0 24 24"><path d="M12 4l7 15H5z"/><line x1="9" y1="13" x2="15" y2="13"/></svg>',
+  doc:'<svg viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="1.5"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>',
+  box:'<svg viewBox="0 0 24 24"><path d="M4 8l8-4 8 4v8l-8 4-8-4z"/><path d="M4 8l8 4 8-4"/><line x1="12" y1="12" x2="12" y2="20"/></svg>',
+  bag:'<svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>',
+  cup:'<svg viewBox="0 0 24 24"><path d="M7 8h10l-1 12H8z"/><line x1="6.5" y1="8" x2="17.5" y2="8"/><path d="M9 5h6l-1 3H10z"/></svg>',
+  shirt:'<svg viewBox="0 0 24 24"><path d="M9 4L4 7l2 3 2-1v9h8v-9l2 1 2-3-5-3-1 2h-4z"/></svg>',
+  card:'<svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="6" y1="14" x2="11" y2="14"/></svg>',
+  tag:'<svg viewBox="0 0 24 24"><path d="M13 4H5v8l7 8 8-8z"/><circle cx="8.5" cy="8" r="1.2"/></svg>',
+  star:'<svg viewBox="0 0 24 24"><path d="M12 3l2.4 5.9L21 9.2l-4.5 4 1.6 6.4L12 16.2 5.9 19.6l1.6-6.4L3 9.2l6.6-.3z"/></svg>',
+  phone:'<svg viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.2"/><line x1="10" y1="18" x2="14" y2="18"/></svg>',
+  pin:'<svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 1 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>',
+  plate:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/></svg>',
+  napkin:'<svg viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="1.5"/><line x1="9" y1="5" x2="9" y2="19"/><line x1="9" y1="12" x2="15" y2="12"/></svg>',
+};
+function icoType(n){ n=n.toLowerCase();
+  if(/вывеск|неон/.test(n))return'sign';
+  if(/штендер|тейбл|стойк|pos|витрин/.test(n))return'stand';
+  if(/стакан/.test(n))return'cup';
+  if(/пакет/.test(n))return'bag';
+  if(/коробк|упаковк|бокс/.test(n))return'box';
+  if(/форм|фартук/.test(n))return'shirt';
+  if(/визитк|лояльн|клубн|ключ|депозит|бейдж|абонемент|клиент/.test(n))return'card';
+  if(/ценник|бирк|ярлык|этикетк/.test(n))return'tag';
+  if(/наклейк|брелок/.test(n))return'star';
+  if(/соцсет|email|маркетплейс|логотип/.test(n))return'phone';
+  if(/навигац|таблич/.test(n))return'pin';
+  if(/салфетк/.test(n))return'napkin';
+  if(/костер|подач|посуд|аменит|косметик/.test(n))return'plate';
+  return'doc';
+}
+const MED_ICON=(n)=>ICONS[icoType(n)];
+
+const state={step:0, sel:new Set(), medSel:new Set(), customMeds:[], cat:null};
+/* цены из калькулятора CRM */
+let PRICES=null; // [{grp,name,price}] по порядку калькулятора; null — прайс не загрузился, считаем по запасным
+const norm=v=>String(v??'').trim().toLowerCase();
+const svcRow=([g,n])=>PRICES&&PRICES.find(r=>r.grp===g&&(n==null||norm(r.name)===norm(n)));
+const svcRows=s=>{ if(!PRICES)return null; const rows=s.svc.map(svcRow); return rows.every(Boolean)?rows:null; };
+const fbPrice=s=>parseInt(s.price.replace(/\D/g,''))||0;
+const priceOf=s=>{ const rows=svcRows(s); return rows?rows.reduce((a,r)=>a+r.price,0):fbPrice(s); };
+const rub=n=>n.toLocaleString('ru-RU')+' ₽';
+const priceText=s=>'от '+rub(priceOf(s));
+// Носители — пакетом по количеству, как в калькуляторе: «до 5», «до 10»… Больше последнего пакета — последний.
+const CARR_FB=[['5 носителей',25000],['10 носителей',35000],['15 носителей',45000],['20 носителей',50000]];
+function carrTiers(){
+  const rows=PRICES?PRICES.filter(r=>r.grp==='carriers'):[];
+  return (rows.length?rows:CARR_FB.map(([name,price])=>({grp:'carriers',name,price})))
+    .map(r=>({...r,n:parseInt((String(r.name).match(/\d+/)||[0])[0])||0}));
+}
+function carrTier(cnt){ if(!cnt)return null; const t=carrTiers(); return t.find(x=>x.n>=cnt)||t[t.length-1]||null; }
+const carrCount=()=>state.medSel.size+state.customMeds.length;
+function renderTier(){
+  const el=document.getElementById('tierBox'); if(!el)return;
+  const cnt=carrCount(), t=carrTier(cnt);
+  el.innerHTML=`<b>Носители считаем пакетом:</b> `+carrTiers().map(x=>`до ${x.n||'…'} — ${rub(x.price)}`).join(' · ')
+    +(t?`<div class="tiernow">Выбрано ${cnt} → пакет «${t.name}» — от ${rub(t.price)}</div>`:'');
+}
+
+/* карточки услуг */
+function makeCard(s,idx,pane,base){
+  const c=document.createElement('div'); c.className='card'; c.style.cssText=`--c:${s.c};--soft:${s.soft}`; const key=base+idx;
+  c.innerHTML=`<div class="crow"><div class="emo">${s.e}</div>
+    <div class="tt"><span class="tag">${s.tag}</span><div class="ctitle">${s.n}</div><div class="cone">${s.one}</div></div>
+    <div class="tick">✓</div></div>
+    <div class="more">что это и пример · тап, чтобы свернуть · ⭕ выбрать</div>
+    <div class="exp"><div class="exp-in">
+      <div class="kv"><b>что</b><span>${s.what}</span></div>
+      <div class="kv"><b>зачем</b><span>${s.why}</span></div>
+      <div class="exlabel">наглядный пример</div>${s.vis}
+      ${s.cap?`<div class="excap">${s.cap}</div>`:''}
+      <div><span class="price">${priceText(s)}</span></div></div></div>`;
+  s._pe=c.querySelector('.price');
+  c.addEventListener('click',e=>{
+    if(e.target.closest('.tick')){ c.classList.toggle('on'); c.classList.contains('on')?state.sel.add(key):state.sel.delete(key); updateCnt(); return; }
+    c.classList.toggle('open');
+  });
+  pane.appendChild(c);
+}
+STRAT.forEach((s,i)=>makeCard(s,i,document.getElementById('p0'),'s'));
+VISUAL.forEach((s,i)=>makeCard(s,i,document.getElementById('p1'),'v'));
+
+/* категории носителей */
+const catsEl=document.getElementById('cats');
+Object.entries(CARRIERS).forEach(([name,d])=>{
+  const el=document.createElement('div'); el.className='cat2'; el.dataset.cat=name;
+  el.innerHTML=`<div class="ce">${d.e}</div><div class="cn">${name}</div>`;
+  el.onclick=()=>selectCat(name);
+  catsEl.appendChild(el);
+});
+function selectCat(name){
+  state.cat=name;
+  [...catsEl.children].forEach(x=>x.classList.toggle('on',x.dataset.cat===name));
+  const active=[...catsEl.children].find(x=>x.dataset.cat===name);
+  if(active) active.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+  renderMeds();
+}
+function renderMeds(){
+  const meds=document.getElementById('meds'), hint=document.getElementById('cathint');
+  if(!state.cat){meds.innerHTML='';return;}
+  hint.textContent=`Носители для «${state.cat}» — отметьте нужные:`;
+  meds.innerHTML='';
+  CARRIERS[state.cat].items.forEach(([ic,nm])=>{
+    const key=state.cat+'·'+nm;
+    const m=document.createElement('div'); m.className='med'+(state.medSel.has(key)?' on':'');
+    m.innerHTML=`<div class="mtick">✓</div><div class="me">${MED_ICON(nm)}</div><div class="mn">${nm}</div>`;
+    m.onclick=()=>{state.medSel.has(key)?state.medSel.delete(key):state.medSel.add(key); m.classList.toggle('on'); updateCnt();};
+    meds.appendChild(m);
+  });
+}
+function renderCustom(){
+  const g=document.getElementById('customGrid'); g.innerHTML='';
+  state.customMeds.forEach((nm,idx)=>{
+    const m=document.createElement('div'); m.className='med on';
+    m.innerHTML=`<div class="mrm" title="убрать">✕</div><div class="me">${ICONS.doc}</div><div class="mn">${nm}</div>`;
+    m.querySelector('.mrm').onclick=(e)=>{e.stopPropagation(); state.customMeds.splice(idx,1); renderCustom(); updateCnt();};
+    g.appendChild(m);
+  });
+}
+
+/* бриф: чипы + чекбокс */
+document.querySelectorAll('.chips .chip').forEach(ch=>{
+  ch.onclick=()=>{
+    const grp=ch.parentElement;
+    if(grp.hasAttribute('data-single')) [...grp.children].forEach(x=>{if(x!==ch)x.classList.remove('on')});
+    ch.classList.toggle('on');
+  };
+});
+document.querySelectorAll('.qcheck').forEach(q=>q.onclick=()=>q.classList.toggle('on'));
+// «вписать своё» в каждый блок чипов
+document.querySelectorAll('.chips').forEach(grp=>{
+  const single=grp.hasAttribute('data-single');
+  const wrap=document.createElement('div'); wrap.className='chipadd';
+  wrap.innerHTML=`<input placeholder="Свой вариант…" autocomplete="off"><button type="button">+</button>`;
+  const inp=wrap.querySelector('input'), btn=wrap.querySelector('button');
+  const add=()=>{
+    const v=inp.value.trim(); if(!v)return;
+    const ch=document.createElement('div'); ch.className='chip on'; ch.textContent='✍️ '+v;
+    ch.onclick=()=>{ if(single)[...grp.querySelectorAll('.chip')].forEach(x=>{if(x!==ch)x.classList.remove('on')}); ch.classList.toggle('on'); };
+    if(single)[...grp.querySelectorAll('.chip')].forEach(x=>x.classList.remove('on'));
+    grp.insertBefore(ch, wrap); inp.value='';
+  };
+  btn.onclick=add;
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();add();}});
+  grp.appendChild(wrap);
+});
+
+/* суммы */
+function plu(n){const a=n%100,b=n%10;if(a>10&&a<20)return'пунктов';if(b>1&&b<5)return'пункта';if(b==1)return'пункт';return'пунктов';}
+function updateCnt(){
+  let sum=0,cnt=0;
+  STRAT.forEach((s,i)=>{if(state.sel.has('s'+i)){sum+=priceOf(s);cnt++;}});
+  VISUAL.forEach((s,i)=>{if(state.sel.has('v'+i)){sum+=priceOf(s);cnt++;}});
+  cnt += carrCount();
+  sum += carrTier(carrCount())?.price || 0;
+  renderTier();
+  document.getElementById('cnt').textContent=cnt;
+  document.getElementById('navsum').innerHTML = cnt
+    ? `Выбрано ${cnt} ${plu(cnt)} · <span>от ${sum.toLocaleString('ru-RU')} ₽</span>`
+    : 'Пока ничего не выбрано';
+}
+function addCustomMed(){
+  const inp=document.getElementById('medInput'); const v=inp.value.trim();
+  if(!v)return; state.customMeds.push(v); inp.value=''; renderCustom(); updateCnt();
+}
+
+/* переключение экранов */
+function setView(v){
+  ['welcome','brief','steps'].forEach(id=>document.getElementById(id).classList.toggle('on',id===v));
+  document.getElementById('nav').style.display = (v==='steps')?'':'none';
+  document.getElementById('scr').scrollTo({top:0});
+}
+
+/* шаги выбора */
+const HEAD=[['Маркетинг и анализ','С чего начинается бренд — стратегия и смыслы.'],
+            ['Визуал бренда','Имя, голос и то, как бренд выглядит.'],
+            ['Носители','Где живёт бренд — под вашу сферу бизнеса.']];
+function show(step){
+  state.step=step;
+  document.querySelectorAll('.pane').forEach((p,i)=>p.classList.toggle('on',i===step));
+  document.querySelectorAll('.step').forEach((s,i)=>{s.classList.toggle('cur',i===step);s.classList.toggle('done',i<step);});
+  document.getElementById('hTitle').textContent=HEAD[step][0];
+  document.getElementById('hSub').textContent=HEAD[step][1];
+  document.getElementById('back').style.display= step? 'block':'none';
+  const go=document.getElementById('go'), txt=document.getElementById('goTxt');
+  if(step===2){go.classList.add('send'); txt.textContent='Отправить запрос';}
+  else{go.classList.remove('send'); txt.textContent='Далее →';}
+  document.getElementById('scr').scrollTo({top:0,behavior:'smooth'});
+  updateCnt();
+}
+
+/* навигация */
+document.getElementById('toBrief').onclick=()=>setView('brief');
+document.getElementById('medAdd').onclick=addCustomMed;
+document.getElementById('medInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCustomMed();});
+document.querySelectorAll('.step').forEach(s=>s.onclick=()=>show(+s.dataset.s));
+document.getElementById('back').onclick=()=>{ if(state.step===0) setView('brief'); else show(state.step-1); };
+function collectBrief(){
+  const out=[];
+  document.querySelectorAll('#brief .qblock').forEach(qb=>{
+    let q=(qb.querySelector('.qlabel')?.textContent||'').replace(/\s+/g,' ');
+    q=q.replace(/можно несколько|подставит носители|необязательно/g,'').replace(/^\s*[\d+]+\s*/,'').trim();
+    const parts=[];
+    qb.querySelectorAll('input, textarea').forEach(i=>{ if(i.closest('.chipadd'))return; const v=(i.value||'').trim(); if(v)parts.push(v); });
+    qb.querySelectorAll('.chip.on').forEach(c=>parts.push(c.textContent.trim()));
+    const chk=qb.querySelector('.qcheck.on'); if(chk)parts.push('☑ '+chk.textContent.replace('✓','').trim());
+    if(parts.length) out.push({q, a:parts.join(', ')});
+  });
+  return out;
+}
+function buildPayload(){
+  // Шлём строки калькулятора (группа + название): цену сервер возьмёт из прайса сам.
+  // Пакет носителей сервер тоже считает сам — по количеству носителей.
+  const services=[];
+  const addCard=s=>{
+    const rows=svcRows(s);
+    s.svc.forEach(([grp,name],j)=>{
+      const r=rows?rows[j]:null;
+      services.push({grp,name:r?r.name:name,price:r?r.price:Math.round(fbPrice(s)/s.svc.length)}); // name null = базовая опция группы
+    });
+  };
+  STRAT.forEach((s,i)=>{ if(state.sel.has('s'+i)) addCard(s); });
+  VISUAL.forEach((s,i)=>{ if(state.sel.has('v'+i)) addCard(s); });
+  const carriers=[...state.medSel].map(k=>k.split('·')[1]).concat(state.customMeds);
+  const total=services.reduce((a,s)=>a+s.price,0)+(carrTier(carriers.length)?.price||0);
+  const val=id=>(document.getElementById(id)?.value||'').trim();
+  const contact=[val('bName'),val('bContact')].filter(Boolean).join(' · ');
+  // hp — ловушка для ботов: поле скрыто, человек его не видит и не заполняет.
+  return {brief:collectBrief(),services,carriers,total,company:val('bBrand'),contact,website:val('hp')};
+}
+const goBtn=document.getElementById('go');
+goBtn.onclick=async ()=>{
+  if(state.step<2){ show(state.step+1); return; }
+  const txt=document.getElementById('goTxt'), old=txt.textContent;
+  goBtn.style.pointerEvents='none'; txt.textContent='Отправляем…';
+  try{
+    const r=await fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
+    if(!r.ok) throw new Error(await r.text());
+    document.getElementById('modal').classList.add('on');
+  }catch(e){
+    alert('Не удалось отправить заявку 😔 Проверьте интернет и попробуйте ещё раз.');
+  }finally{ goBtn.style.pointerEvents=''; txt.textContent=old; }
+};
+document.getElementById('mclose').onclick=()=>document.getElementById('modal').classList.remove('on');
+
+/* бриф → шаги (+ подстановка сферы в носители) */
+function startSteps(){
+  const sphereChip=document.querySelector('.chips[data-group="sphere"] .chip.on');
+  if(sphereChip){
+    const label=sphereChip.textContent.replace(/[^\p{L}\s/-]/gu,'').trim();
+    const cat=SPHERE2CAT[label];
+    if(cat) selectCat(cat);
+  }
+  setView('steps'); show(0);
+}
+// кнопка «Далее» на брифе — добавляем свою (у брифа нет общего nav)
+const briefBtn=document.createElement('button');
+briefBtn.className='wbtn'; briefBtn.style.cssText='width:calc(100% - 32px);margin:6px 16px 10px;display:block;background:var(--red)';
+briefBtn.textContent='Продолжить →'; briefBtn.onclick=startSteps;
+document.getElementById('brief').appendChild(briefBtn);
+
+// Прайс калькулятора CRM: обновляем цены на карточках и итог. Не загрузился — остаются запасные.
+fetch('/api/submit-brief?prices=1').then(r=>r.ok?r.json():null).then(d=>{
+  if(!d||!Array.isArray(d.services)||!d.services.length)return;
+  PRICES=d.services.map(r=>({grp:String(r.grp),name:String(r.name).trim(),price:Number(r.price)||0}));
+  [...STRAT,...VISUAL].forEach(s=>{ if(s._pe) s._pe.textContent=priceText(s); });
+  updateCnt();
+}).catch(()=>{});
+
+setView('welcome');
+</script>
+<input id="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+</body>
+</html>

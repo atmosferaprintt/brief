@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Разбор бренда · заявка</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#F5324B;--dark:#151515}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:'Manrope',system-ui,sans-serif;color:#1A1A1A;background:#e7e3dd}
+  h1,h2,h3{font-family:'Unbounded','Manrope',sans-serif}
+  .app{width:100%;max-width:480px;margin:0 auto;height:100dvh;background:#faf7f2;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,0,0,.10)}
+  .screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;background:#faf7f2}
+  .screen::-webkit-scrollbar{width:0}
+  .view{display:none} .view.on{display:block}
+
+  /* welcome */
+  .welcome{min-height:100dvh;background:var(--red);color:#fff;padding:52px 26px 30px;display:flex;flex-direction:column;text-align:center;position:relative;overflow:hidden}
+  .welcome::after{content:"";position:absolute;right:-50px;bottom:120px;width:180px;height:180px;border:22px solid rgba(255,255,255,.12);border-radius:50%}
+  .welcome::before{content:"";position:absolute;left:-40px;top:-40px;width:150px;height:150px;background:rgba(255,255,255,.08);border-radius:50%}
+  .wbrand{font-family:'Unbounded';font-weight:800;font-size:15px;position:relative;z-index:2}
+  .wmid{margin:auto 0;position:relative;z-index:2}
+  .wemoji{font-size:56px;margin-bottom:10px}
+  .welcome h1{font-family:'Unbounded';font-weight:800;font-size:31px;line-height:1.05;margin:0 0 12px}
+  .welcome .wsub{font-size:14.5px;line-height:1.5;opacity:.95;margin:0 auto;max-width:300px}
+  .wpts{display:flex;flex-direction:column;gap:8px;margin:22px auto 0;max-width:290px;text-align:left}
+  .wpts div{background:rgba(255,255,255,.14);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;display:flex;gap:9px;align-items:center}
+  .wbtn{position:relative;z-index:2;border:none;background:#151515;color:#fff;border-radius:18px;padding:17px;font-family:'Unbounded';font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+
+  /* brief */
+  .brief{padding:26px 16px 26px}
+  .btop{font-family:'Unbounded';font-weight:800;font-size:12px;color:var(--red);margin-bottom:6px}
+  .brief h2{font-family:'Unbounded';font-weight:800;font-size:22px;margin:0 0 4px;line-height:1.1}
+  .brief .bsub{font-size:13px;color:#7a736a;margin:0 0 20px;line-height:1.4}
+  .qblock{margin-bottom:18px}
+  .qlabel{font-size:13.5px;font-weight:800;margin-bottom:9px;display:flex;gap:7px;align-items:baseline}
+  .qnum{color:var(--red);font-family:'Unbounded';font-size:12px}
+  .qopt2{font-weight:600;font-size:11px;color:#b0a89e}
+  .qinput{width:100%;border:2px solid #efe9e1;border-radius:14px;padding:12px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff;margin-bottom:8px}
+  .qinput:focus{border-color:var(--red)}
+  textarea.qinput{min-height:66px;resize:vertical;line-height:1.4}
+  .qex{font-size:11.5px;color:#a89f96;margin:-3px 0 9px;line-height:1.35}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:2px solid #efe9e1;background:#fff;border-radius:22px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;color:#333;transition:.14s}
+  .chip.on{border-color:var(--red);background:#feebee;color:var(--red)}
+  .chipadd{display:flex;gap:6px;flex-basis:100%;margin-top:2px}
+  .chipadd input{flex:1;border:2px dashed #e0dad0;border-radius:20px;padding:9px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff}
+  .chipadd input:focus{border-color:var(--red);border-style:solid}
+  .chipadd button{border:none;background:#151515;color:#fff;border-radius:20px;width:40px;font-size:18px;font-weight:700;cursor:pointer}
+  .submit{width:100%;border:none;background:var(--red);color:#fff;border-radius:18px;padding:17px;font-family:'Unbounded';font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 16px 34px -14px var(--red);margin-top:6px}
+  .filebtn{display:flex;align-items:center;gap:8px;justify-content:center;border:2px dashed #d9d3ca;background:#fff;border-radius:14px;padding:14px;font-size:14px;font-weight:700;color:#555;cursor:pointer}
+  .filelist{display:flex;flex-direction:column;gap:7px;margin-top:9px}
+  .fileitem{display:flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #efe9e1;border-radius:12px;padding:9px 11px;font-size:12.5px}
+  .fileitem .fi-ic{font-size:18px}
+  .fileitem .fi-nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+  .fileitem .fi-sz{font-size:11px;color:#a89f96;white-space:nowrap}
+  .fileitem .fi-rm{cursor:pointer;color:#c33;font-weight:800;font-size:15px;padding:0 4px}
+  .fileitem.err{border-color:#f3b0b0;background:#fdf0f0}
+  .fileitem.err .fi-sz{color:#c33}
+
+  /* modal котик */
+  .modal{position:absolute;inset:0;z-index:60;background:rgba(20,6,12,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:26px}
+  .modal.on{display:flex}
+  .mcard{background:#fff;border-radius:28px;padding:26px 22px 24px;text-align:center;width:100%;box-shadow:0 40px 80px -20px #000;animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .catsvg{width:140px;height:150px;margin:0 auto;display:block;animation:bob 2.4s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+  .mcard h3{font-family:'Unbounded';font-weight:800;font-size:20px;margin:12px 0 8px}
+  .mcard p{font-size:13.5px;color:#7a736a;line-height:1.5;margin:0 auto;max-width:260px}
+  .dots{margin-top:16px;font-family:'Unbounded';font-weight:800;letter-spacing:4px;color:var(--red);font-size:22px}
+  .dots span{animation:blink 1.4s infinite}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+  .mclose{margin-top:18px;border:2px solid #ded8cf;background:#fff;border-radius:14px;padding:12px 20px;font-family:'Unbounded';font-weight:700;font-size:12.5px;cursor:pointer;color:#555}
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="screen" id="scr">
+
+      <!-- WELCOME -->
+      <div class="view on" id="welcome">
+        <div class="welcome">
+          <div class="wbrand">atmosfera · брендинг</div>
+          <div class="wmid">
+            <div class="wemoji">🔍</div>
+            <h1>Разберём<br>ваш бренд</h1>
+            <p class="wsub">Оставьте короткую заявку — покажем сильные и слабые стороны вашего бренда и предложим, что усилить.</p>
+            <div class="wpts">
+              <div>💪 Сильные стороны — что уже работает</div>
+              <div>⚠️ Слабые места — что теряет клиентов</div>
+              <div>🚀 Что усилить и с чего начать</div>
+            </div>
+          </div>
+          <button class="wbtn" id="toBrief">Оставить заявку →</button>
+        </div>
+      </div>
+
+      <!-- BRIEF -->
+      <div class="view" id="brief">
+        <div class="brief">
+          <div class="btop">🔎 Заявка на разбор бренда</div>
+          <h2>Пара вопросов</h2>
+          <p class="bsub">Чтобы разобрать бренд предметно — расскажите чуть о себе и дайте ссылки.</p>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">1</span> Название компании / бренда</div>
+            <input class="qinput" id="bBrand" placeholder="Название">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">2</span> Имя и контакт</div>
+            <input class="qinput" id="bName" placeholder="Имя">
+            <input class="qinput" id="bContact" placeholder="Телефон или Telegram">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">3</span> Чем занимаетесь?</div>
+            <div class="qex">Коротко: что продаёте / какая услуга.</div>
+            <input class="qinput" placeholder="Напр. кофейня спешелти">
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">4</span> Ссылки на ваш бренд</div>
+            <div class="qex"><b>Важно для разбора.</b> Сайт, Instagram, соцсети — что есть.</div>
+            <textarea class="qinput" placeholder="Сайт, соцсети, ссылки"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">5</span> Что уже есть? <span class="qopt2">можно несколько</span></div>
+            <div class="chips" data-group="have">
+              <div class="chip">Логотип</div><div class="chip">Сайт</div><div class="chip">Соцсети</div>
+              <div class="chip">Упаковка</div><div class="chip">Реклама</div><div class="chip">Ничего</div>
+            </div>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">6</span> Что беспокоит в бренде?</div>
+            <div class="qex">Что хотите узнать / что кажется не так. Пример: выглядит устаревшим, теряемся среди конкурентов.</div>
+            <textarea class="qinput" placeholder="Ваши сомнения и вопросы"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">7</span> Что хотите получить от разбора? <span class="qopt2">необязательно</span></div>
+            <textarea class="qinput" placeholder="Ваши ожидания"></textarea>
+          </div>
+
+          <div class="qblock">
+            <div class="qlabel"><span class="qnum">8</span> Прикрепите файлы <span class="qopt2">фото, PDF — по желанию</span></div>
+            <div class="qex">Логотип, макеты, скрины соцсетей, презентация — что поможет разбору.</div>
+            <label class="filebtn">📎 Выбрать файлы
+              <input type="file" id="fileInput" accept="image/*,application/pdf" multiple hidden>
+            </label>
+            <div class="filelist" id="fileList"></div>
+          </div>
+
+          <button class="submit" id="send">Отправить заявку</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL котик -->
+    <div class="modal" id="modal">
+      <div class="mcard">
+        <svg class="catsvg" viewBox="0 0 140 150">
+          <path d="M40 46 L34 15 L64 38 Z" fill="#F4A259"/><path d="M100 46 L106 15 L76 38 Z" fill="#F4A259"/>
+          <path d="M43 42 L41 25 L58 38 Z" fill="#F9CBA4"/><path d="M97 42 L99 25 L82 38 Z" fill="#F9CBA4"/>
+          <ellipse cx="70" cy="70" rx="43" ry="39" fill="#F4A259"/>
+          <path d="M70 34 v9 M60 35 l2 8 M80 35 l-2 8" stroke="#E0863A" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <ellipse cx="45" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/><ellipse cx="95" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/>
+          <path d="M50 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <path d="M78 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          <path d="M66 76 h8 l-4 4.5 z" fill="#E76F8E"/>
+          <path d="M70 80 q-5 6 -11 3 M70 80 q5 6 11 3" stroke="#4A2C18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+          <path d="M30 68 h16 M28 76 h18 M110 68 h-16 M112 76 h-18" stroke="#C8935C" stroke-width="2" stroke-linecap="round"/>
+          <rect x="50" y="108" width="40" height="28" rx="4" fill="#fff" stroke="#E0863A" stroke-width="2.4"/>
+          <path d="M58 122 l6 6 12 -12" stroke="#F4A259" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <ellipse cx="48" cy="118" rx="9" ry="7" fill="#F4A259"/><ellipse cx="92" cy="118" rx="9" ry="7" fill="#F4A259"/>
+        </svg>
+        <h3>Заявка принята!</h3>
+        <p>Разберём ваш бренд — сильные и слабые стороны — и вернёмся с разбором и предложением 🐾</p>
+        <div class="dots"><span>●</span><span>●</span><span>●</span></div>
+        <button class="mclose" id="mclose">Хорошо</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+const scr=document.getElementById('scr');
+document.getElementById('toBrief').onclick=()=>{
+  document.getElementById('welcome').classList.remove('on');
+  document.getElementById('brief').classList.add('on');
+  scr.scrollTo({top:0});
+};
+document.querySelectorAll('.chips .chip').forEach(ch=>{ ch.onclick=()=>ch.classList.toggle('on'); });
+document.querySelectorAll('.chips').forEach(grp=>{
+  const wrap=document.createElement('div'); wrap.className='chipadd';
+  wrap.innerHTML=`<input placeholder="Свой вариант…" autocomplete="off"><button type="button">+</button>`;
+  const inp=wrap.querySelector('input'), btn=wrap.querySelector('button');
+  const add=()=>{ const v=inp.value.trim(); if(!v)return;
+    const ch=document.createElement('div'); ch.className='chip on'; ch.textContent='✍️ '+v;
+    ch.onclick=()=>ch.classList.toggle('on'); grp.insertBefore(ch,wrap); inp.value=''; };
+  btn.onclick=add; inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();add();}});
+  grp.appendChild(wrap);
+});
+function collectBrief(){
+  const out=[];
+  document.querySelectorAll('#brief .qblock').forEach(qb=>{
+    let q=(qb.querySelector('.qlabel')?.textContent||'').replace(/\s+/g,' ').replace(/можно несколько|необязательно/g,'').replace(/^\s*\d+\s*/,'').trim();
+    const parts=[];
+    qb.querySelectorAll('input, textarea').forEach(i=>{ if(i.closest('.chipadd'))return; const v=(i.value||'').trim(); if(v)parts.push(v); });
+    qb.querySelectorAll('.chip.on').forEach(c=>parts.push(c.textContent.trim()));
+    if(parts.length) out.push({q, a:parts.join(', ')});
+  });
+  return out;
+}
+// ── файлы ──
+const attached=[]; // {name,type,dataB64,size,err}
+const fileInput=document.getElementById('fileInput'), fileList=document.getElementById('fileList');
+fileInput.onchange=async ()=>{ for(const f of fileInput.files){ await addFile(f); } fileInput.value=''; renderFiles(); };
+function compressImage(file){ return new Promise(res=>{ const img=new Image(), url=URL.createObjectURL(file);
+  img.onload=()=>{ const max=1600; let w=img.width,h=img.height; if(w>max||h>max){const r=Math.min(max/w,max/h);w=Math.round(w*r);h=Math.round(h*r);}
+    const c=document.createElement('canvas'); c.width=w;c.height=h; c.getContext('2d').drawImage(img,0,0,w,h);
+    const d=c.toDataURL('image/jpeg',0.72); URL.revokeObjectURL(url);
+    res({name:file.name.replace(/\.\w+$/,'')+'.jpg', type:'image/jpeg', dataB64:d.split(',')[1]}); };
+  img.onerror=()=>res(null); img.src=url; }); }
+function readB64(file){ return new Promise(r=>{ const fr=new FileReader(); fr.onload=()=>r(String(fr.result).split(',')[1]||''); fr.onerror=()=>r(''); fr.readAsDataURL(file); }); }
+function fmtSize(b){ return b>1048576? (b/1048576).toFixed(1)+' МБ' : Math.round(b/1024)+' КБ'; }
+async function addFile(f){
+  const e={name:f.name, type:f.type||'application/octet-stream'};
+  try{
+    if((f.type||'').startsWith('image/')){ const c=await compressImage(f); if(!c){e.err='ошибка чтения';attached.push(e);return;} e.name=c.name; e.type=c.type; e.dataB64=c.dataB64; }
+    else { e.dataB64=await readB64(f); }
+    e.size=Math.round((e.dataB64.length*3)/4);
+    if(!e.dataB64) e.err='ошибка чтения';
+    else if(e.size>4.3*1024*1024) e.err='слишком большой (>4 МБ)';
+  }catch(_){ e.err='ошибка'; }
+  attached.push(e);
+}
+function renderFiles(){
+  fileList.innerHTML='';
+  attached.forEach((f,i)=>{
+    const el=document.createElement('div'); el.className='fileitem'+(f.err?' err':'');
+    const ic=(f.type||'').startsWith('image')?'🖼️':'📄';
+    el.innerHTML=`<span class="fi-ic">${ic}</span><span class="fi-nm">${f.name}</span><span class="fi-sz">${f.err||fmtSize(f.size||0)}</span><span class="fi-rm">✕</span>`;
+    el.querySelector('.fi-rm').onclick=()=>{ attached.splice(i,1); renderFiles(); };
+    fileList.appendChild(el);
+  });
+}
+
+const send=document.getElementById('send');
+send.onclick=async ()=>{
+  const val=id=>(document.getElementById(id)?.value||'').trim();
+  const contact=[val('bName'),val('bContact')].filter(Boolean).join(' · ');
+  const old=send.textContent; send.style.pointerEvents='none'; send.textContent='Отправляем…';
+  try{
+    // 1) загрузка файлов по одному
+    const uploaded=[]; const good=attached.filter(f=>!f.err && f.dataB64);
+    for(let k=0;k<good.length;k++){
+      send.textContent=`Загружаем файл ${k+1}/${good.length}…`;
+      const u=await fetch('/api/upload-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:good[k].name,type:good[k].type,dataB64:good[k].dataB64})});
+      if(u.ok){ const j=await u.json(); if(j.url) uploaded.push({name:good[k].name,url:j.url}); }
+    }
+    // 2) заявка
+    send.textContent='Отправляем…';
+    const payload={brief:collectBrief(),company:val('bBrand'),contact,files:uploaded,website:val('hp')};
+    const r=await fetch('/api/submit-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!r.ok) throw new Error(await r.text());
+    document.getElementById('modal').classList.add('on');
+  }catch(e){ alert('Не удалось отправить 😔 Проверьте интернет и попробуйте ещё раз.'); }
+  finally{ send.style.pointerEvents=''; send.textContent=old; }
+};
+document.getElementById('mclose').onclick=()=>document.getElementById('modal').classList.remove('on');
+</script>
+<input id="hp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+</body>
+</html>

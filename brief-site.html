@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>atmosfera · бриф на сайт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--hg:#3B5BDB;--hgsoft:#e7ebfa;--dark:#151515}
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0;font-family:'Manrope',system-ui,sans-serif;color:#1A1A1A;background:#e4e7ef}
+  .app{width:100%;max-width:480px;margin:0 auto;min-height:100dvh;background:#f7f8fc;position:relative;box-shadow:0 0 40px rgba(0,0,0,.10)}
+
+  /* ===== WELCOME ===== */
+  .welcome{min-height:100dvh;background:var(--hg);color:#fff;padding:52px 26px 30px;display:flex;flex-direction:column;text-align:center;position:relative;overflow:hidden}
+  .welcome::after{content:"";position:absolute;right:-50px;bottom:120px;width:180px;height:180px;border:22px solid rgba(255,255,255,.12);border-radius:50%}
+  .welcome::before{content:"";position:absolute;left:-40px;top:-40px;width:150px;height:150px;background:rgba(255,255,255,.08);border-radius:50%}
+  .wbrand{font-family:'Unbounded';font-weight:800;font-size:14px;position:relative;z-index:2}
+  .wmid{margin:auto 0;position:relative;z-index:2}
+  .wwave{font-size:54px;margin-bottom:10px}
+  .welcome h1{font-family:'Unbounded';font-weight:800;font-size:29px;line-height:1.08;margin:0 0 12px}
+  .welcome .wsub{font-size:14.5px;line-height:1.5;opacity:.95;margin:0 auto;max-width:300px}
+  .wflow{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:22px;font-size:11.5px;font-weight:700}
+  .wflow span{background:rgba(255,255,255,.16);border-radius:20px;padding:6px 12px}
+  .wflow i{opacity:.6;font-style:normal;align-self:center}
+  .wbtn{position:relative;z-index:2;border:none;background:#151515;color:#fff;border-radius:18px;padding:17px;font-family:'Unbounded';font-weight:700;font-size:15px;cursor:pointer;box-shadow:0 18px 40px -14px rgba(0,0,0,.6)}
+  .view{display:none} .view.on{display:block}
+
+  /* ===== BRIEF ===== */
+  .brief{padding:26px 16px 30px}
+  .btop{font-family:'Unbounded';font-weight:800;font-size:12px;color:var(--hg);margin-bottom:6px}
+  .brief h2{font-family:'Unbounded';font-weight:800;font-size:22px;margin:0 0 4px;line-height:1.1}
+  .brief .bsub{font-size:13px;color:#6f7480;margin:0 0 20px;line-height:1.4}
+  .bsec{font-family:'Unbounded';font-weight:700;font-size:12px;color:var(--hg);text-transform:uppercase;letter-spacing:.04em;margin:24px 4px 14px;padding-top:14px;border-top:1px solid #e3e6f0;display:flex;align-items:center;gap:7px}
+  .bsec:first-of-type{border-top:none;padding-top:0;margin-top:6px}
+  .qblock{margin-bottom:20px}
+  .qlabel{font-size:13.5px;font-weight:800;margin-bottom:10px;display:flex;gap:7px;align-items:baseline}
+  .qnum{color:var(--hg);font-family:'Unbounded';font-size:12px}
+  .qopt2{font-weight:600;font-size:11px;color:#a2a8b8}
+  .qinput{width:100%;border:2px solid #e3e6f0;border-radius:14px;padding:12px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff;margin-bottom:8px}
+  .qinput:focus{border-color:var(--hg)}
+  textarea.qinput{min-height:66px;resize:vertical;line-height:1.4}
+  .qex{font-size:11.5px;color:#959bac;margin:-3px 0 9px;line-height:1.35}
+  .qex b{color:#7e8496}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:2px solid #e3e6f0;background:#fff;border-radius:22px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;display:flex;gap:6px;align-items:center;transition:.14s;color:#333}
+  .chip.on{border-color:var(--hg);background:var(--hgsoft);color:var(--hg)}
+  .chipadd{display:flex;gap:6px;flex-basis:100%;margin-top:2px}
+  .chipadd input{flex:1;border:2px dashed #d5daea;border-radius:20px;padding:9px 14px;font-size:16px;font-family:'Manrope';outline:none;background:#fff}
+  .chipadd input:focus{border-color:var(--hg);border-style:solid}
+  .chipadd button{border:none;background:#151515;color:#fff;border-radius:20px;width:40px;font-size:18px;font-weight:700;cursor:pointer}
+  .chip .pr{font-size:10.5px;font-weight:800;color:#8b91a3;background:#eef0f7;border-radius:10px;padding:2px 7px;white-space:nowrap}
+  .chip.on .pr{background:var(--hg);color:#fff}
+
+  /* ===== ESTIMATE ===== */
+  .est{background:#fff;border:2px solid #e3e6f0;border-radius:20px;padding:18px 16px 16px;margin:26px 0 4px}
+  .est h4{font-family:'Unbounded';font-weight:800;font-size:13.5px;margin:0 0 5px;display:flex;gap:7px;align-items:center}
+  .esub{font-size:11.5px;color:#959bac;margin:0 0 10px;line-height:1.4}
+  .erow{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:12.5px;font-weight:600;padding:6px 0;border-bottom:1px dashed #e3e6f0;color:#444}
+  .erow span:last-child{white-space:nowrap;font-weight:800;color:#333}
+  .erow.base span:first-child{font-weight:800}
+  .eempty{font-size:12.5px;color:#959bac;line-height:1.45;padding:4px 0 2px}
+  .etotal{display:flex;justify-content:space-between;align-items:baseline;margin-top:10px;padding-top:12px;border-top:2px solid #e3e6f0;font-weight:800;font-size:13px}
+  .etotal b{font-family:'Unbounded';font-size:19px;color:var(--hg);white-space:nowrap}
+  .einc{margin-top:14px;background:var(--hgsoft);border-radius:14px;padding:13px 14px}
+  .einc h5{font-family:'Unbounded';font-weight:800;font-size:11.5px;color:var(--hg);margin:0 0 8px;text-transform:uppercase;letter-spacing:.03em}
+  .eit{display:flex;gap:8px;align-items:baseline;font-size:12px;font-weight:600;color:#3d4560;padding:3px 0;line-height:1.4}
+  .eit b{color:var(--hg);font-weight:800}
+
+  .sendbtn{width:100%;border:none;background:var(--hg);color:#fff;border-radius:18px;padding:17px;font-family:'Unbounded';font-weight:700;font-size:15px;cursor:pointer;margin-top:10px;box-shadow:0 14px 30px -14px var(--hg)}
+  .foot{text-align:center;color:#8b91a3;font-size:11.5px;margin-top:16px;line-height:1.5}
+
+  /* ===== MODAL ===== */
+  .modal{position:fixed;inset:0;z-index:60;background:rgba(8,12,28,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:26px}
+  .modal.on{display:flex}
+  .mcard{background:#fff;border-radius:28px;padding:30px 22px 24px;text-align:center;width:100%;max-width:420px;box-shadow:0 40px 80px -20px #000;animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  .memoji{font-size:64px;animation:bob 2.4s ease-in-out infinite;display:block}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+  .mcard h3{font-family:'Unbounded';font-weight:800;font-size:20px;margin:14px 0 8px}
+  .mcard p{font-size:13.5px;color:#6f7480;line-height:1.5;margin:0 auto;max-width:270px}
+  .dots{margin-top:16px;font-family:'Unbounded';font-weight:800;letter-spacing:4px;color:var(--hg);font-size:22px}
+  .dots span{animation:blink 1.4s infinite}
+  .dots span:nth-child(2){animation-delay:.2s} .dots span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+  .mclose{margin-top:18px;border:2px solid #d5daea;background:#fff;border-radius:14px;padding:12px 20px;font-family:'Unbounded';font-weight:700;font-size:12.5px;cursor:pointer;color:#555}
+</style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- ===== WELCOME ===== -->
+    <div class="view on" id="welcome">
+      <div class="welcome">
+        <div class="wbrand">atmosfera · сайты</div>
+        <div class="wmid">
+          <div class="wwave">🌐</div>
+          <h1>Сделаем сайт,<br>который приводит клиентов</h1>
+          <p class="wsub">Короткий бриф на 3–5 минут: что за бизнес, какой сайт нужен и что он должен уметь. Сразу увидите предварительную смету.</p>
+          <div class="wflow"><span>📝 Бриф</span><i>→</i><span>🧮 Оценка</span><i>→</i><span>📄 Предложение</span></div>
+        </div>
+        <button class="wbtn" id="toBrief">Заполнить бриф →</button>
+      </div>
+    </div>
+
+    <!-- ===== BRIEF ===== -->
+    <div class="view" id="brief">
+      <div class="brief">
+        <div class="btop">📝 Бриф на разработку сайта</div>
+        <h2>Расскажите про будущий сайт</h2>
+        <p class="bsub">Отвечайте как есть — чем честнее картина, тем точнее попадём в вашу задачу 🙂</p>
+
+        <div class="bsec">🏢 О бизнесе</div>
+
+        <div class="qblock" data-q="Компания и контакт">
+          <div class="qlabel"><span class="qnum">1</span> Компания и контакт для связи</div>
+          <input class="qinput" id="bBrand" placeholder="Название компании / бренда">
+          <input class="qinput" id="bName" placeholder="Имя">
+          <input class="qinput" id="bContact" placeholder="Телефон / WhatsApp / Telegram">
+        </div>
+
+        <div class="qblock" data-q="Чем занимаетесь и что продаёте">
+          <div class="qlabel"><span class="qnum">2</span> Чем занимаетесь и что продаёте?</div>
+          <div class="qex"><b>Пример:</b> кофейня с доставкой десертов · стоматология · продаём косметику оптом и в розницу.</div>
+          <textarea class="qinput" placeholder="Своими словами: бизнес, товары или услуги, город"></textarea>
+        </div>
+
+        <div class="qblock" data-q="Главная задача сайта">
+          <div class="qlabel"><span class="qnum">3</span> Главная задача сайта?</div>
+          <div class="chips" data-single>
+            <div class="chip">📥 Получать заявки и звонки</div>
+            <div class="chip">🛒 Продавать прямо на сайте</div>
+            <div class="chip">💼 Имидж — чтобы нам доверяли</div>
+            <div class="chip">📖 Каталог-витрина для клиентов</div>
+            <div class="chip">🤷 Не знаю, подскажите</div>
+          </div>
+        </div>
+
+        <div class="bsec">🌐 Каким будет сайт</div>
+
+        <div class="qblock" data-q="Какой сайт нужен (тип)">
+          <div class="qlabel"><span class="qnum">4</span> Какой сайт нужен?</div>
+          <div class="qex">Тип сайта — это база сметы внизу. Не уверены — выберите «подскажите», сориентируем на созвоне.</div>
+          <div class="chips" data-single id="siteType">
+            <div class="chip" data-base="45000">🚀 Лендинг — одна продающая страница <span class="pr">от 45 тыс</span></div>
+            <div class="chip" data-base="80000">🏢 Корпоративный сайт — 5–7 страниц <span class="pr">от 80 тыс</span></div>
+            <div class="chip" data-base="150000">🛍️ Интернет-магазин с корзиной <span class="pr">от 150 тыс</span></div>
+            <div class="chip" data-base="25000">❓ Квиз-анкета для рекламы <span class="pr">от 25 тыс</span></div>
+            <div class="chip">🤷 Не знаю, подскажите</div>
+          </div>
+        </div>
+
+        <div class="qblock" data-q="Что уже есть">
+          <div class="qlabel"><span class="qnum">5</span> Что уже есть? <span class="qopt2">можно несколько</span></div>
+          <div class="chips">
+            <div class="chip">🎨 Логотип и фирменный стиль</div>
+            <div class="chip">📝 Тексты о компании</div>
+            <div class="chip">📷 Фото и видео</div>
+            <div class="chip">🌐 Домен (адрес сайта)</div>
+            <div class="chip">🖥️ Старый сайт — надо переделать</div>
+            <div class="chip">🙅 Ничего — начинаем с нуля</div>
+          </div>
+          <input class="qinput" style="margin-top:10px" placeholder="Ссылка на старый сайт / соцсети, если есть">
+        </div>
+
+        <div class="qblock" data-q="Какие разделы нужны на сайте">
+          <div class="qlabel"><span class="qnum">6</span> Какие разделы нужны? <span class="qopt2">можно несколько</span></div>
+          <div class="qex">Разделы входят в стоимость типа сайта — это про структуру, на смету не влияет.</div>
+          <div class="chips">
+            <div class="chip">🧾 Услуги и цены</div>
+            <div class="chip">🗂️ Каталог товаров</div>
+            <div class="chip">🏆 Кейсы / портфолио</div>
+            <div class="chip">⭐ Отзывы</div>
+            <div class="chip">👥 О компании и команда</div>
+            <div class="chip">❓ Вопрос-ответ</div>
+            <div class="chip">📞 Контакты и карта</div>
+            <div class="chip">📰 Блог / новости</div>
+          </div>
+        </div>
+
+        <div class="bsec">⚙️ Возможности</div>
+
+        <div class="qblock" data-q="Дополнительный функционал">
+          <div class="qlabel"><span class="qnum">7</span> Что сайт должен уметь? <span class="qopt2">можно несколько</span></div>
+          <div class="qex">У каждого блока своя цена «от» — добавится отдельной строкой в смету внизу.</div>
+          <div class="chips">
+            <div class="chip" data-price="0">📨 Форма заявки / обратный звонок <span class="pr">0 ₽</span></div>
+            <div class="chip" data-price="0">💬 Кнопки WhatsApp / Telegram <span class="pr">0 ₽</span></div>
+            <div class="chip" data-price="20000">❓ Квиз-подбор внутри сайта <span class="pr">от 20 тыс</span></div>
+            <div class="chip" data-price="25000">🧮 Калькулятор стоимости <span class="pr">от 25 тыс</span></div>
+            <div class="chip" data-price="20000">📅 Онлайн-запись на время <span class="pr">от 20 тыс</span></div>
+            <div class="chip" data-price="40000">🛒 Корзина и онлайн-оплата <span class="pr">от 40 тыс</span></div>
+            <div class="chip" data-price="40000">👤 Личный кабинет клиента <span class="pr">от 40 тыс</span></div>
+            <div class="chip" data-price="20000">🌍 Вторая языковая версия <span class="pr">от 20 тыс</span></div>
+            <div class="chip" data-price="25000">✏️ Админка — меняете тексты и цены сами <span class="pr">от 25 тыс</span></div>
+          </div>
+        </div>
+
+        <div class="qblock" data-q="Интеграции">
+          <div class="qlabel"><span class="qnum">8</span> Интеграции с чем нужны? <span class="qopt2">можно несколько</span></div>
+          <div class="chips">
+            <div class="chip" data-price="15000">🗂️ CRM — заявки сразу в систему <span class="pr">от 15 тыс</span></div>
+            <div class="chip" data-price="25000">🏦 Оплата / эквайринг / банк <span class="pr">от 25 тыс</span></div>
+            <div class="chip" data-price="25000">🚚 Доставка (СДЭК, Почта…) <span class="pr">от 25 тыс</span></div>
+            <div class="chip" data-price="20000">🤖 Рассылки / Telegram-бот <span class="pr">от 20 тыс</span></div>
+            <div class="chip" data-price="30000">📒 1С / МойСклад <span class="pr">от 30 тыс</span></div>
+            <div class="chip">🙅 Пока без интеграций</div>
+          </div>
+        </div>
+
+        <div class="qblock" data-q="Сайты-примеры, которые нравятся">
+          <div class="qlabel"><span class="qnum">9</span> Сайты, которые вам нравятся <span class="qopt2">необязательно</span></div>
+          <div class="qex">2–3 ссылки — конкуренты или просто красивые сайты. Что именно нравится: цвета, подача, структура?</div>
+          <textarea class="qinput" placeholder="Ссылки и пару слов, что нравится"></textarea>
+        </div>
+
+        <div class="bsec">✍️ Контент</div>
+
+        <div class="qblock" data-q="Кто готовит тексты и фото">
+          <div class="qlabel"><span class="qnum">10</span> Кто готовит тексты и фото?</div>
+          <div class="chips" data-single>
+            <div class="chip">📦 Всё есть — отдадим готовое</div>
+            <div class="chip" data-price="15000">📝 Тексты напишите вы <span class="pr">от 15 тыс</span></div>
+            <div class="chip">📷 Нужна фотосъёмка — обсудим</div>
+            <div class="chip">🤷 Пока не думали</div>
+          </div>
+        </div>
+
+        <div class="bsec">📅 Сроки и бюджет</div>
+
+        <div class="qblock" data-q="Когда нужен сайт">
+          <div class="qlabel"><span class="qnum">11</span> Когда нужен рабочий сайт?</div>
+          <div class="chips" data-single>
+            <div class="chip">🔥 Срочно — в этом месяце</div>
+            <div class="chip">В течение 1–2 месяцев</div>
+            <div class="chip">Не горит — главное качественно</div>
+          </div>
+        </div>
+
+        <div class="qblock" data-q="Бюджет">
+          <div class="qlabel"><span class="qnum">12</span> Бюджет на разработку</div>
+          <div class="chips" data-single>
+            <div class="chip">До 80 тыс ₽</div><div class="chip">80–150 тыс ₽</div>
+            <div class="chip">150–300 тыс ₽</div><div class="chip">Обсудим лично</div>
+          </div>
+        </div>
+
+        <div class="qblock" data-q="Комментарий">
+          <div class="qlabel"><span class="qnum">13</span> Что ещё нам важно знать? <span class="qopt2">необязательно</span></div>
+          <textarea class="qinput" placeholder="Пожелания, вопросы, особенности"></textarea>
+        </div>
+
+        <div class="est" id="est">
+          <h4>🧮 Предварительная смета</h4>
+          <p class="esub">База — тип сайта из вопроса 4. Функционал и интеграции из вопросов 7–8 добавляются отдельными строками. Цены «от» — точную стоимость назовём после созвона.</p>
+          <div class="erow base"><span id="estBaseName">🌐 Тип сайта — выберите в вопросе 4</span><span id="estBasePrice">—</span></div>
+          <div id="estRows"></div>
+          <div class="eempty" id="estEmpty">Отметьте возможности в вопросах 7–8 — каждая добавится в смету отдельной строкой 👆</div>
+          <div class="etotal" id="estTotalRow">Итого&nbsp;&nbsp;<b>от <span id="estTotal">0</span> ₽</b></div>
+          <div class="einc">
+            <h5>🛡️ Уже входит в стоимость</h5>
+            <div class="eit"><b>✓</b><span>Дизайн под ваш бренд + адаптив: телефон, планшет, компьютер</span></div>
+            <div class="eit"><b>✓</b><span>Защищённое соединение (HTTPS / SSL) и быстрая загрузка</span></div>
+            <div class="eit"><b>✓</b><span>Домен и хостинг — поможем выбрать, настроим, запустим</span></div>
+            <div class="eit"><b>✓</b><span>Форма заявки с уведомлением в WhatsApp / на почту</span></div>
+            <div class="eit"><b>✓</b><span>Яндекс.Метрика и цели — видно, откуда приходят заявки</span></div>
+            <div class="eit"><b>✓</b><span>Базовая SEO-настройка: заголовки, описания, карта сайта</span></div>
+            <div class="eit"><b>✓</b><span>Обучение + месяц поддержки после запуска</span></div>
+          </div>
+        </div>
+
+        <button class="sendbtn" id="send">Отправить бриф →</button>
+        <div class="foot">Ответы уйдут команде atmosfera — посчитаем объём работы и вернёмся с предложением.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== MODAL ===== -->
+  <div class="modal" id="modal">
+    <div class="mcard">
+      <span class="memoji">🚀</span>
+      <h3>Бриф отправлен!</h3>
+      <p>Спасибо! Изучим ответы, посчитаем объём работы и скоро свяжемся с предложением по вашему сайту.</p>
+      <div class="dots"><span>●</span><span>●</span><span>●</span></div>
+      <button class="mclose" id="mclose">Хорошо</button>
+    </div>
+  </div>
+
+<script>
+/* чипы: выбор + «Другое» в каждой группе */
+document.querySelectorAll('.chips .chip').forEach(ch=>{
+  ch.onclick=()=>{
+    const grp=ch.parentElement;
+    if(grp.hasAttribute('data-single')) [...grp.querySelectorAll('.chip')].forEach(x=>{if(x!==ch)x.classList.remove('on')});
+    ch.classList.toggle('on');
+  };
+});
+document.querySelectorAll('.chips').forEach(grp=>{
+  const single=grp.hasAttribute('data-single');
+  const wrap=document.createElement('div'); wrap.className='chipadd';
+  wrap.innerHTML=`<input placeholder="Другое — впишите своё…" autocomplete="off"><button type="button">+</button>`;
+  const inp=wrap.querySelector('input'), btn=wrap.querySelector('button');
+  const add=()=>{
+    const v=inp.value.trim(); if(!v)return;
+    const ch=document.createElement('div'); ch.className='chip on'; ch.textContent='✍️ '+v;
+    ch.onclick=()=>{ if(single)[...grp.querySelectorAll('.chip')].forEach(x=>{if(x!==ch)x.classList.remove('on')}); ch.classList.toggle('on'); };
+    if(single)[...grp.querySelectorAll('.chip')].forEach(x=>x.classList.remove('on'));
+    grp.insertBefore(ch, wrap); inp.value='';
+  };
+  btn.onclick=add;
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();add();}});
+  grp.appendChild(wrap);
+});
+
+/* живая смета: база = тип сайта (в.4), + каждый блок из в.7–8 и платный контент */
+const fmtPrice=n=>n.toLocaleString('ru-RU');
+const chipLabel=ch=>{ const c=ch.cloneNode(true); c.querySelector('.pr')?.remove(); return c.textContent.trim(); };
+function updateEst(){
+  const baseChip=document.querySelector('#siteType .chip.on[data-base]');
+  const base=baseChip?+baseChip.dataset.base:0;
+  document.getElementById('estBaseName').textContent=baseChip?chipLabel(baseChip)+' — база':'🌐 Тип сайта — выберите в вопросе 4';
+  document.getElementById('estBasePrice').textContent=baseChip?'от '+fmtPrice(base)+' ₽':'—';
+  const rows=document.getElementById('estRows'); rows.innerHTML='';
+  let total=base, count=0;
+  document.querySelectorAll('#brief .chip.on[data-price]').forEach(ch=>{
+    const p=+ch.dataset.price;
+    total+=p; count++;
+    const row=document.createElement('div'); row.className='erow';
+    const name=document.createElement('span'); name.textContent=chipLabel(ch);
+    const price=document.createElement('span'); price.textContent=p?'от '+fmtPrice(p)+' ₽':'бесплатно';
+    row.append(name, price); rows.appendChild(row);
+  });
+  document.getElementById('estEmpty').style.display=count?'none':'block';
+  document.getElementById('estTotal').textContent=fmtPrice(total);
+  return {total, count, baseChip};
+}
+document.addEventListener('click',e=>{ if(e.target.closest('.chip')) updateEst(); });
+updateEst();
+
+function collectBrief(){
+  const out=[];
+  document.querySelectorAll('#brief .qblock').forEach(qb=>{
+    const q=qb.dataset.q||'';
+    const parts=[];
+    qb.querySelectorAll('.chip.on').forEach(c=>parts.push(chipLabel(c)));
+    qb.querySelectorAll('input, textarea').forEach(i=>{ if(i.closest('.chipadd'))return; const v=(i.value||'').trim(); if(v)parts.push(v); });
+    if(parts.length) out.push({q, a:parts.join(', ')});
+  });
+  return out;
+}
+function buildPayload(){
+  const val=id=>(document.getElementById(id)?.value||'').trim();
+  const contact=[val('bName'),val('bContact')].filter(Boolean).join(' · ');
+  const brand=val('bBrand');
+  const brief=collectBrief();
+  const est=updateEst();
+  const baseLabel=est.baseChip?chipLabel(est.baseChip):'тип сайта не выбран';
+  brief.push({q:'Предварительная смета', a:est.total?'от '+fmtPrice(est.total)+' ₽ (база: '+baseLabel+(est.count?' + '+est.count+' блоков/интеграций':'')+')':'не рассчитана ('+baseLabel+')'});
+  return {brief, services:[], carriers:[], total:0, company:'САЙТ · '+(brand||contact||'заявка'), contact, source:'brief-site.html · заявка на сайт'};
+}
+
+document.getElementById('toBrief').onclick=()=>{
+  document.getElementById('welcome').classList.remove('on');
+  document.getElementById('brief').classList.add('on');
+  window.scrollTo({top:0});
+};
+
+const btn=document.getElementById('send');
+btn.onclick=async ()=>{
+  const contact=(document.getElementById('bContact').value||'').trim();
+  if(!contact){ alert('Оставьте телефон или мессенджер — иначе не сможем связаться 🙂'); document.getElementById('bContact').focus(); return; }
+  const old=btn.textContent;
+  btn.style.pointerEvents='none'; btn.textContent='Отправляем…';
+  try{
+    const r=await fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
+    if(!r.ok) throw new Error(await r.text());
+    document.getElementById('modal').classList.add('on');
+  }catch(e){
+    alert('Не удалось отправить бриф 😔 Проверьте интернет и попробуйте ещё раз.');
+  }finally{ btn.style.pointerEvents=''; btn.textContent=old; }
+};
+document.getElementById('mclose').onclick=()=>document.getElementById('modal').classList.remove('on');
+</script>
+</body>
+</html>
