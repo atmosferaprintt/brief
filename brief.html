@@ -176,20 +176,24 @@
   .go .pill{background:rgba(255,255,255,.25);border-radius:20px;padding:4px 11px;font-size:12.5px}
   .go.send{background:#151515;box-shadow:0 14px 30px -14px #151515}
 
-  /* ===== MODAL (котик) ===== */
-  .modal{position:absolute;inset:0;z-index:60;background:rgba(20,6,12,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:26px}
-  .modal.on{display:flex}
-  .mcard{background:#fff;border-radius:28px;padding:26px 22px 24px;text-align:center;width:100%;box-shadow:0 40px 80px -20px #000;animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
-  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
-  .catsvg{width:140px;height:140px;margin:0 auto;display:block;animation:bob 2.4s ease-in-out infinite}
+  /* ===== ИТОГ: заявка текстом → WhatsApp / скопировать ===== */
+  .done-hero{text-align:center;padding-bottom:22px}
+  .catsvg{width:96px;height:96px;margin:8px auto 0;display:block;animation:bob 2.4s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
-  .mcard h3{font-family:'Unbounded';font-weight:800;font-size:20px;margin:12px 0 8px}
-  .mcard p{font-size:13.5px;color:#7a736a;line-height:1.5;margin:0 auto;max-width:250px}
-  .dots{margin-top:16px;font-family:'Unbounded';font-weight:800;letter-spacing:4px;color:var(--red);font-size:22px}
-  .dots span{animation:blink 1.4s infinite}
-  .dots span:nth-child(2){animation-delay:.2s} .dots span:nth-child(3){animation-delay:.4s}
-  @keyframes blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
-  .mclose{margin-top:18px;border:2px solid #ded8cf;background:#fff;border-radius:14px;padding:12px 20px;font-family:'Unbounded';font-weight:700;font-size:12.5px;cursor:pointer;color:#555}
+  .dbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:16px;padding:16px;font-family:'Unbounded';font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;margin-bottom:10px;background:#151515;color:#fff}
+  .dbtn.wa{background:#128C7E;box-shadow:0 14px 30px -14px #128C7E}
+  .dhint{font-size:11.5px;color:#8a8177;text-align:center;margin:2px 8px 16px;line-height:1.4}
+  .dtext{white-space:pre-wrap;word-break:break-word;background:#fff;border:2px solid #efe9e1;border-radius:16px;padding:14px;font-size:13px;line-height:1.5;color:#333;user-select:text;-webkit-user-select:text}
+  .dedit{width:100%;margin-top:14px}
+
+  /* варианты внутри карточки «Логотип и фирменный стиль» */
+  .lopts{padding:0 14px 12px;display:flex;flex-direction:column;gap:7px}
+  .lopt{display:flex;gap:10px;align-items:center;border:2px solid #efe9e1;border-radius:14px;padding:10px 12px;cursor:pointer;transition:.15s}
+  .lopt i{width:18px;height:18px;flex:0 0 18px;border-radius:50%;border:2px solid #ded8cf;transition:.15s}
+  .lopt b{display:block;font-size:13px;font-weight:800}
+  .lopt span{display:block;font-size:11.5px;color:#7a736a;margin-top:1px;line-height:1.3}
+  .lopt.on{border-color:var(--c);background:var(--soft)}
+  .lopt.on i{border:5px solid var(--c)}
 
   .foot{text-align:center;color:#8a7f88;font-size:12px;margin-top:22px;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.5}
 </style>
@@ -341,16 +345,6 @@
             <div class="qex">Пример: хочу, чтобы продукт привлекал внимание на полке и вызывал эмоции.</div>
             <textarea class="qinput" placeholder="Ваш ожидаемый результат"></textarea>
           </div>
-
-          <div class="qblock">
-            <div class="qlabel"><span class="qnum">18</span> Бюджет на разработку</div>
-            <input class="qinput" placeholder="Сумма от и до">
-          </div>
-
-          <div class="qblock">
-            <div class="qlabel"><span class="qnum">19</span> Желаемый срок</div>
-            <input class="qinput" placeholder="Когда нужно / крайний срок">
-          </div>
         </div>
       </div>
 
@@ -362,6 +356,7 @@
             <div class="step cur" data-s="0"><div class="bar"></div><div class="st">1 · Маркетинг</div></div>
             <div class="step" data-s="1"><div class="bar"></div><div class="st">2 · Визуал</div></div>
             <div class="step" data-s="2"><div class="bar"></div><div class="st">3 · Носители</div></div>
+            <div class="step" data-s="3"><div class="bar"></div><div class="st">4 · Сроки</div></div>
           </div>
           <h2 id="hTitle">Маркетинг и анализ</h2>
           <p id="hSub">С чего начинается бренд — стратегия и смыслы.</p>
@@ -371,7 +366,6 @@
           <div class="pane" id="p1"></div>
           <div class="pane" id="p2">
             <div class="sechint">Ваша сфера — покажем нужные носители</div>
-            <div class="tierbox" id="tierBox"></div>
             <div class="catwrap" id="cats"></div>
             <div class="cathint" id="cathint">Выберите категорию выше 👆</div>
             <div class="grid" id="meds"></div>
@@ -384,6 +378,49 @@
               <div class="grid" id="customGrid" style="margin-top:10px"></div>
             </div>
           </div>
+          <div class="pane" id="p3">
+            <div class="qblock">
+              <div class="qlabel"><span class="qnum">18</span> Примерные сроки — когда нужен результат?</div>
+              <div class="qex">Пример: к открытию 1 марта, в течение месяца, не горит.</div>
+              <textarea class="qinput" placeholder="Ваши сроки"></textarea>
+            </div>
+            <div class="qblock">
+              <div class="qlabel"><span class="qnum">19</span> Ориентировочный бюджет</div>
+              <div class="qex">Сколько готовы вложить в бренд — так подберём команду и объём работ.</div>
+              <input class="qinput" placeholder="Сумма от и до">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== ИТОГ ===== -->
+      <div class="view" id="done">
+        <div class="hero done-hero">
+          <div class="brand">atmosfera · брендинг</div>
+          <svg class="catsvg" viewBox="0 0 140 150">
+            <path d="M40 46 L34 15 L64 38 Z" fill="#F4A259"/><path d="M100 46 L106 15 L76 38 Z" fill="#F4A259"/>
+            <path d="M43 42 L41 25 L58 38 Z" fill="#F9CBA4"/><path d="M97 42 L99 25 L82 38 Z" fill="#F9CBA4"/>
+            <ellipse cx="70" cy="70" rx="43" ry="39" fill="#F4A259"/>
+            <path d="M70 34 v9 M60 35 l2 8 M80 35 l-2 8" stroke="#E0863A" stroke-width="3" stroke-linecap="round" fill="none"/>
+            <ellipse cx="45" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/><ellipse cx="95" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/>
+            <path d="M50 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            <path d="M78 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            <path d="M66 76 h8 l-4 4.5 z" fill="#E76F8E"/>
+            <path d="M70 80 q-5 6 -11 3 M70 80 q5 6 11 3" stroke="#4A2C18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <path d="M30 68 h16 M28 76 h18 M110 68 h-16 M112 76 h-18" stroke="#C8935C" stroke-width="2" stroke-linecap="round"/>
+            <rect x="50" y="108" width="40" height="28" rx="4" fill="#fff" stroke="#E0863A" stroke-width="2.4"/>
+            <line x1="56" y1="116" x2="84" y2="116" stroke="#F4A259" stroke-width="2"/><line x1="56" y1="122" x2="84" y2="122" stroke="#F4A259" stroke-width="2"/><line x1="56" y1="128" x2="76" y2="128" stroke="#F4A259" stroke-width="2"/>
+            <ellipse cx="48" cy="118" rx="9" ry="7" fill="#F4A259"/><ellipse cx="92" cy="118" rx="9" ry="7" fill="#F4A259"/>
+          </svg>
+          <h2 id="dTitle">Заявка отправлена!</h2>
+          <p id="dSub"></p>
+        </div>
+        <div class="body">
+          <a class="dbtn wa" id="dWa" target="_blank" rel="noopener">💬 Отправить в WhatsApp</a>
+          <button class="dbtn" id="dCopy">📋 Скопировать текст</button>
+          <div class="dhint">Если в WhatsApp вставилось не всё — текст уже скопирован, просто вставьте его в чат.</div>
+          <div class="dtext" id="dText"></div>
+          <button class="back dedit" id="dEdit">← Изменить ответы</button>
         </div>
       </div>
 
@@ -397,30 +434,6 @@
       </div>
     </div>
 
-    <!-- ===== MODAL котик ===== -->
-    <div class="modal" id="modal">
-      <div class="mcard">
-        <svg class="catsvg" viewBox="0 0 140 150">
-          <path d="M40 46 L34 15 L64 38 Z" fill="#F4A259"/><path d="M100 46 L106 15 L76 38 Z" fill="#F4A259"/>
-          <path d="M43 42 L41 25 L58 38 Z" fill="#F9CBA4"/><path d="M97 42 L99 25 L82 38 Z" fill="#F9CBA4"/>
-          <ellipse cx="70" cy="70" rx="43" ry="39" fill="#F4A259"/>
-          <path d="M70 34 v9 M60 35 l2 8 M80 35 l-2 8" stroke="#E0863A" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <ellipse cx="45" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/><ellipse cx="95" cy="80" rx="8" ry="5" fill="#F98BA9" opacity=".6"/>
-          <path d="M50 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-          <path d="M78 66 q6 7 12 0" stroke="#4A2C18" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-          <path d="M66 76 h8 l-4 4.5 z" fill="#E76F8E"/>
-          <path d="M70 80 q-5 6 -11 3 M70 80 q5 6 11 3" stroke="#4A2C18" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-          <path d="M30 68 h16 M28 76 h18 M110 68 h-16 M112 76 h-18" stroke="#C8935C" stroke-width="2" stroke-linecap="round"/>
-          <rect x="50" y="108" width="40" height="28" rx="4" fill="#fff" stroke="#E0863A" stroke-width="2.4"/>
-          <line x1="56" y1="116" x2="84" y2="116" stroke="#F4A259" stroke-width="2"/><line x1="56" y1="122" x2="84" y2="122" stroke="#F4A259" stroke-width="2"/><line x1="56" y1="128" x2="76" y2="128" stroke="#F4A259" stroke-width="2"/>
-          <ellipse cx="48" cy="118" rx="9" ry="7" fill="#F4A259"/><ellipse cx="92" cy="118" rx="9" ry="7" fill="#F4A259"/>
-        </svg>
-        <h3>Заявка отправлена!</h3>
-        <p>Ваше коммерческое предложение уже готовится — скоро свяжемся. Спасибо, что выбрали нас 🐾</p>
-        <div class="dots"><span>●</span><span>●</span><span>●</span></div>
-        <button class="mclose" id="mclose">Хорошо</button>
-      </div>
-    </div>
   </div>
 
 
@@ -500,9 +513,14 @@ const VISUAL = [
  {e:'🗣️',c:'#8B5CF6',soft:'#f1ecfb',tag:'Вербальное',n:'Tone of Voice',one:'Как бренд говорит',
   what:'Голос бренда: стиль текстов, словарь, интонация.',why:'Чтобы бренд везде звучал узнаваемо.',vis:V.tone,cap:'',price:'от 15 000 ₽',
   svc:[['research','Tone of Voice (голос бренда)']]},
- {e:'🎨',c:'#F5324B',soft:'#feebee',tag:'Визуал',n:'Логотип и фирменный стиль',one:'Знак, цвета, шрифты, паттерны',
-  what:'Логотип и его версии + дизайн-система: палитра, типографика, графические элементы.',why:'Чтобы вас узнавали за секунду — и везде одинаково.',vis:V.logo+'<div style="height:8px"></div>'+V.style,cap:'Знак QUBIX в ярких сочетаниях + палитра и шрифты, из которых собирается всё оформление.',price:'от 50 000 ₽',
-  svc:[['concepts',null]]},
+ {e:'🎨',c:'#F5324B',soft:'#feebee',tag:'Визуал',n:'Логотип и фирменный стиль',one:'Выберите, что нужно 👇',
+  what:'Логотип — знак и его версии. Фирменный стиль — дизайн-система вокруг него: палитра, типографика, графические элементы.',why:'Чтобы вас узнавали за секунду — и везде одинаково.',vis:V.logo+'<div style="height:8px"></div>'+V.style,cap:'Знак QUBIX в ярких сочетаниях + палитра и шрифты, из которых собирается всё оформление.',
+  // один вариант из трёх; price и svc — у варианта. «Только логотип» — шаг «Носители» прячется
+  opts:[
+   {k:'both',n:'Логотип + фирменный стиль',d:'Знак и вся дизайн-система вокруг него',price:'от 50 000 ₽',svc:[['concepts',null]]},
+   {k:'logo',n:'Только логотип',d:'Фирменный стиль не нужен',price:'от 50 000 ₽',svc:[['concepts',null]]},
+   {k:'style',n:'Только фирменный стиль',d:'Логотип уже есть — строим стиль вокруг него',price:'0',svc:[['extra','Фирменный стиль (логотип уже есть)']]},
+  ]},
  {e:'📘',c:'#3B5BDB',soft:'#e9edfb',tag:'Документ',n:'Брендбук',one:'Все правила бренда в одном файле',
   what:'Вёрстка брендбука: как пользоваться логотипом, цветами, шрифтами и носителями.',why:'Любой дизайнер или типография сделают всё в вашем стиле — без созвонов и угадывания.',vis:V.book,cap:'Готовый PDF, который можно отдать любому подрядчику.',price:'от 30 000 ₽',
   svc:[['guide','до 20 стр.']]},
@@ -572,16 +590,15 @@ function icoType(n){ n=n.toLowerCase();
 }
 const MED_ICON=(n)=>ICONS[icoType(n)];
 
-const state={step:0, sel:new Set(), medSel:new Set(), customMeds:[], cat:null};
-/* цены из калькулятора CRM */
+const state={step:0, sel:new Set(), medSel:new Set(), customMeds:[], cat:null, logoOpt:null};
+// Выбранный вариант карточки с opts (логотип / фирстиль); у обычной карточки — она сама
+const pick=s=>s.opts?(s.opts.find(o=>o.k===state.logoOpt)||s.opts[0]):s;
+/* цены из калькулятора CRM — клиенту пока не показываем, уходят только в заявку */
 let PRICES=null; // [{grp,name,price}] по порядку калькулятора; null — прайс не загрузился, считаем по запасным
 const norm=v=>String(v??'').trim().toLowerCase();
 const svcRow=([g,n])=>PRICES&&PRICES.find(r=>r.grp===g&&(n==null||norm(r.name)===norm(n)));
-const svcRows=s=>{ if(!PRICES)return null; const rows=s.svc.map(svcRow); return rows.every(Boolean)?rows:null; };
-const fbPrice=s=>parseInt(s.price.replace(/\D/g,''))||0;
-const priceOf=s=>{ const rows=svcRows(s); return rows?rows.reduce((a,r)=>a+r.price,0):fbPrice(s); };
-const rub=n=>n.toLocaleString('ru-RU')+' ₽';
-const priceText=s=>'от '+rub(priceOf(s));
+const svcRows=s=>{ if(!PRICES)return null; const rows=pick(s).svc.map(svcRow); return rows.every(Boolean)?rows:null; };
+const fbPrice=s=>parseInt(pick(s).price.replace(/\D/g,''))||0;
 // Носители — пакетом по количеству, как в калькуляторе: «до 5», «до 10»… Больше последнего пакета — последний.
 const CARR_FB=[['5 носителей',25000],['10 носителей',35000],['15 носителей',45000],['20 носителей',50000]];
 function carrTiers(){
@@ -590,13 +607,10 @@ function carrTiers(){
     .map(r=>({...r,n:parseInt((String(r.name).match(/\d+/)||[0])[0])||0}));
 }
 function carrTier(cnt){ if(!cnt)return null; const t=carrTiers(); return t.find(x=>x.n>=cnt)||t[t.length-1]||null; }
-const carrCount=()=>state.medSel.size+state.customMeds.length;
-function renderTier(){
-  const el=document.getElementById('tierBox'); if(!el)return;
-  const cnt=carrCount(), t=carrTier(cnt);
-  el.innerHTML=`<b>Носители считаем пакетом:</b> `+carrTiers().map(x=>`до ${x.n||'…'} — ${rub(x.price)}`).join(' · ')
-    +(t?`<div class="tiernow">Выбрано ${cnt} → пакет «${t.name}» — от ${rub(t.price)}</div>`:'');
-}
+// «Только логотип» — фирменного стиля нет, носители не нужны: шаг 3 прячем, выбранные носители не считаем
+const noCarriers=()=>state.logoOpt==='logo';
+const carrList=()=>noCarriers()?[]:[...state.medSel].map(k=>k.split('·')[1]).concat(state.customMeds);
+const carrCount=()=>carrList().length;
 
 /* карточки услуг */
 function makeCard(s,idx,pane,base){
@@ -604,16 +618,26 @@ function makeCard(s,idx,pane,base){
   c.innerHTML=`<div class="crow"><div class="emo">${s.e}</div>
     <div class="tt"><span class="tag">${s.tag}</span><div class="ctitle">${s.n}</div><div class="cone">${s.one}</div></div>
     <div class="tick">✓</div></div>
+    ${s.opts?`<div class="lopts">${s.opts.map(o=>`<div class="lopt" data-k="${o.k}"><i></i><div><b>${o.n}</b><span>${o.d}</span></div></div>`).join('')}</div>`:''}
     <div class="more">что это и пример · тап, чтобы свернуть · ⭕ выбрать</div>
     <div class="exp"><div class="exp-in">
       <div class="kv"><b>что</b><span>${s.what}</span></div>
       <div class="kv"><b>зачем</b><span>${s.why}</span></div>
       <div class="exlabel">наглядный пример</div>${s.vis}
-      ${s.cap?`<div class="excap">${s.cap}</div>`:''}
-      <div><span class="price">${priceText(s)}</span></div></div></div>`;
-  s._pe=c.querySelector('.price');
+      ${s.cap?`<div class="excap">${s.cap}</div>`:''}</div></div>`;
+  // вариант null — карточка снята
+  const setOpt=k=>{
+    state.logoOpt=k; c.classList.toggle('on',!!k); k?state.sel.add(key):state.sel.delete(key);
+    c.querySelectorAll('.lopt').forEach(x=>x.classList.toggle('on',x.dataset.k===k));
+    renderSteps(); updateCnt();
+  };
   c.addEventListener('click',e=>{
-    if(e.target.closest('.tick')){ c.classList.toggle('on'); c.classList.contains('on')?state.sel.add(key):state.sel.delete(key); updateCnt(); return; }
+    const lo=e.target.closest('.lopt');
+    if(lo){ setOpt(state.logoOpt===lo.dataset.k?null:lo.dataset.k); return; }
+    if(e.target.closest('.tick')){
+      if(s.opts){ setOpt(c.classList.contains('on')?null:s.opts[0].k); return; }
+      c.classList.toggle('on'); c.classList.contains('on')?state.sel.add(key):state.sel.delete(key); updateCnt(); return;
+    }
     c.classList.toggle('open');
   });
   pane.appendChild(c);
@@ -689,16 +713,9 @@ document.querySelectorAll('.chips').forEach(grp=>{
 /* суммы */
 function plu(n){const a=n%100,b=n%10;if(a>10&&a<20)return'пунктов';if(b>1&&b<5)return'пункта';if(b==1)return'пункт';return'пунктов';}
 function updateCnt(){
-  let sum=0,cnt=0;
-  STRAT.forEach((s,i)=>{if(state.sel.has('s'+i)){sum+=priceOf(s);cnt++;}});
-  VISUAL.forEach((s,i)=>{if(state.sel.has('v'+i)){sum+=priceOf(s);cnt++;}});
-  cnt += carrCount();
-  sum += carrTier(carrCount())?.price || 0;
-  renderTier();
+  const cnt=state.sel.size+carrCount();
   document.getElementById('cnt').textContent=cnt;
-  document.getElementById('navsum').innerHTML = cnt
-    ? `Выбрано ${cnt} ${plu(cnt)} · <span>от ${sum.toLocaleString('ru-RU')} ₽</span>`
-    : 'Пока ничего не выбрано';
+  document.getElementById('navsum').textContent = cnt ? `Выбрано ${cnt} ${plu(cnt)}` : 'Пока ничего не выбрано';
 }
 function addCustomMed(){
   const inp=document.getElementById('medInput'); const v=inp.value.trim();
@@ -707,7 +724,7 @@ function addCustomMed(){
 
 /* переключение экранов */
 function setView(v){
-  ['welcome','brief','steps'].forEach(id=>document.getElementById(id).classList.toggle('on',id===v));
+  ['welcome','brief','steps','done'].forEach(id=>document.getElementById(id).classList.toggle('on',id===v));
   document.getElementById('nav').style.display = (v==='steps')?'':'none';
   document.getElementById('scr').scrollTo({top:0});
 }
@@ -715,7 +732,20 @@ function setView(v){
 /* шаги выбора */
 const HEAD=[['Маркетинг и анализ','С чего начинается бренд — стратегия и смыслы.'],
             ['Визуал бренда','Имя, голос и то, как бренд выглядит.'],
-            ['Носители','Где живёт бренд — под вашу сферу бизнеса.']];
+            ['Носители','Где живёт бренд — под вашу сферу бизнеса.'],
+            ['Сроки и бюджет','Два последних вопроса — и заявка готова.']];
+const STEP_NAMES=['Маркетинг','Визуал','Носители','Сроки'];
+const stepOrder=()=>noCarriers()?[0,1,3]:[0,1,2,3];
+const LAST_STEP=3;
+// Полоска шагов: без носителей шаг 3 прячем и перенумеровываем остальные
+function renderSteps(){
+  const order=stepOrder();
+  document.querySelectorAll('.step').forEach(el=>{
+    const i=order.indexOf(+el.dataset.s);
+    el.style.display=i<0?'none':'';
+    if(i>=0) el.querySelector('.st').textContent=`${i+1} · ${STEP_NAMES[+el.dataset.s]}`;
+  });
+}
 function show(step){
   state.step=step;
   document.querySelectorAll('.pane').forEach((p,i)=>p.classList.toggle('on',i===step));
@@ -724,10 +754,10 @@ function show(step){
   document.getElementById('hSub').textContent=HEAD[step][1];
   document.getElementById('back').style.display= step? 'block':'none';
   const go=document.getElementById('go'), txt=document.getElementById('goTxt');
-  if(step===2){go.classList.add('send'); txt.textContent='Отправить запрос';}
+  if(step===LAST_STEP){go.classList.add('send'); txt.textContent='Отправить запрос';}
   else{go.classList.remove('send'); txt.textContent='Далее →';}
   document.getElementById('scr').scrollTo({top:0,behavior:'smooth'});
-  updateCnt();
+  renderSteps(); updateCnt();
 }
 
 /* навигация */
@@ -735,10 +765,14 @@ document.getElementById('toBrief').onclick=()=>setView('brief');
 document.getElementById('medAdd').onclick=addCustomMed;
 document.getElementById('medInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCustomMed();});
 document.querySelectorAll('.step').forEach(s=>s.onclick=()=>show(+s.dataset.s));
-document.getElementById('back').onclick=()=>{ if(state.step===0) setView('brief'); else show(state.step-1); };
-function collectBrief(){
+document.getElementById('back').onclick=()=>{
+  if(state.step===0){ setView('brief'); return; }
+  const order=stepOrder(); show(order[order.indexOf(state.step)-1]??0);
+};
+// sel — какие вопросы: бриф или последний шаг «Сроки и бюджет»
+function collectBrief(sel='#brief .qblock'){
   const out=[];
-  document.querySelectorAll('#brief .qblock').forEach(qb=>{
+  document.querySelectorAll(sel).forEach(qb=>{
     let q=(qb.querySelector('.qlabel')?.textContent||'').replace(/\s+/g,' ');
     q=q.replace(/можно несколько|подставит носители|необязательно/g,'').replace(/^\s*[\d+]+\s*/,'').trim();
     const parts=[];
@@ -754,35 +788,88 @@ function buildPayload(){
   // Пакет носителей сервер тоже считает сам — по количеству носителей.
   const services=[];
   const addCard=s=>{
-    const rows=svcRows(s);
-    s.svc.forEach(([grp,name],j)=>{
+    const rows=svcRows(s), svc=pick(s).svc;
+    svc.forEach(([grp,name],j)=>{
       const r=rows?rows[j]:null;
-      services.push({grp,name:r?r.name:name,price:r?r.price:Math.round(fbPrice(s)/s.svc.length)}); // name null = базовая опция группы
+      services.push({grp,name:r?r.name:name,price:r?r.price:Math.round(fbPrice(s)/svc.length)}); // name null = базовая опция группы
     });
   };
   STRAT.forEach((s,i)=>{ if(state.sel.has('s'+i)) addCard(s); });
   VISUAL.forEach((s,i)=>{ if(state.sel.has('v'+i)) addCard(s); });
-  const carriers=[...state.medSel].map(k=>k.split('·')[1]).concat(state.customMeds);
+  const carriers=carrList();
   const total=services.reduce((a,s)=>a+s.price,0)+(carrTier(carriers.length)?.price||0);
   const val=id=>(document.getElementById(id)?.value||'').trim();
   const contact=[val('bName'),val('bContact')].filter(Boolean).join(' · ');
+  // какой вариант логотипа выбран — отдельным пунктом брифа, чтобы менеджер видел его в заметке
+  const logo=VISUAL.find(s=>s.opts), lo=state.logoOpt&&pick(logo);
+  const brief=[...collectBrief(), ...(lo?[{q:logo.n, a:lo.n+' — '+lo.d}]:[]), ...collectBrief('#p3 .qblock')];
   // hp — ловушка для ботов: поле скрыто, человек его не видит и не заполняет.
-  return {brief:collectBrief(),services,carriers,total,company:val('bBrand'),contact,website:val('hp')};
+  return {brief,services,carriers,total,company:val('bBrand'),contact,website:val('hp')};
 }
+
+/* итог: заявка текстом → WhatsApp / скопировать */
+const WA_URL='https://wa.me/79964206266';
+// bold — звёздочки WhatsApp вокруг заголовков (для ссылки в WhatsApp; на экране и при копировании без них)
+function buildText(bold){
+  const b=t=>bold?`*${t}*`:t, L=[b('Заявка на брендинг — atmosfera')];
+  const qa=list=>list.forEach(x=>L.push('',b(x.q),x.a));
+  const brief=collectBrief(), tail=collectBrief('#p3 .qblock');
+  if(brief.length){ L.push('',b('📝 БРИФ')); qa(brief); }
+  const chosen=[...STRAT.filter((s,i)=>state.sel.has('s'+i)),...VISUAL.filter((s,i)=>state.sel.has('v'+i))]
+    .map(s=>s.opts?`${s.n}: ${pick(s).n}`:s.n);
+  if(chosen.length) L.push('',b('🧩 ЧТО НУЖНО'),...chosen.map(n=>'• '+n));
+  const carriers=carrList();
+  if(carriers.length) L.push('',b('📦 НОСИТЕЛИ'),...carriers.map(n=>'• '+n));
+  if(tail.length){ L.push('',b('📅 СРОКИ И БЮДЖЕТ')); qa(tail); }
+  return L.join('\n');
+}
+async function copyText(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const ta=document.createElement('textarea'); ta.value=t; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;top:0;opacity:0';
+    document.body.appendChild(ta); ta.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(_){}
+    ta.remove(); return ok;
+  }
+}
+// sent — заявка дошла до CRM; нет (сервер недоступен) — просим прислать её в WhatsApp
+function showDone(sent){
+  document.getElementById('dTitle').textContent=sent?'Заявка отправлена!':'Почти готово!';
+  document.getElementById('dSub').textContent=sent
+    ?'Скоро свяжемся 🐾 Можно продублировать заявку нам в WhatsApp или сохранить текст себе.'
+    :'Отправьте нам заявку в WhatsApp — одной кнопкой ниже. Или скопируйте текст и пришлите удобным способом.';
+  document.getElementById('dText').textContent=buildText(false);
+  document.getElementById('dWa').href=WA_URL+'?text='+encodeURIComponent(buildText(true));
+  setView('done');
+}
+const dCopy=document.getElementById('dCopy');
+dCopy.onclick=async ()=>{
+  const ok=await copyText(document.getElementById('dText').textContent);
+  dCopy.textContent=ok?'✓ Скопировано':'Выделите текст ниже и скопируйте';
+  setTimeout(()=>{ dCopy.textContent='📋 Скопировать текст'; },2500);
+};
+// длинный текст WhatsApp может обрезать в ссылке — заодно кладём его в буфер
+document.getElementById('dWa').onclick=()=>{ copyText(document.getElementById('dText').textContent); };
+document.getElementById('dEdit').onclick=()=>{ setView('steps'); show(LAST_STEP); };
+
+let lastSent=null; // ту же заявку повторно в CRM не шлём (вернулись «Изменить ответы» и ничего не поменяли)
 const goBtn=document.getElementById('go');
 goBtn.onclick=async ()=>{
-  if(state.step<2){ show(state.step+1); return; }
+  const order=stepOrder(), i=order.indexOf(state.step);
+  if(i<order.length-1){ show(order[i+1]); return; }
   const txt=document.getElementById('goTxt'), old=txt.textContent;
-  goBtn.style.pointerEvents='none'; txt.textContent='Отправляем…';
-  try{
-    const r=await fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
-    if(!r.ok) throw new Error(await r.text());
-    document.getElementById('modal').classList.add('on');
-  }catch(e){
-    alert('Не удалось отправить заявку 😔 Проверьте интернет и попробуйте ещё раз.');
-  }finally{ goBtn.style.pointerEvents=''; txt.textContent=old; }
+  const body=JSON.stringify(buildPayload());
+  let sent=body===lastSent;
+  if(!sent){
+    goBtn.style.pointerEvents='none'; txt.textContent='Отправляем…';
+    try{
+      const r=await fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body});
+      sent=r.ok;
+    }catch(e){ sent=false; }
+    finally{ goBtn.style.pointerEvents=''; txt.textContent=old; }
+    if(sent) lastSent=body;
+  }
+  showDone(sent);
 };
-document.getElementById('mclose').onclick=()=>document.getElementById('modal').classList.remove('on');
 
 /* бриф → шаги (+ подстановка сферы в носители) */
 function startSteps(){
@@ -800,12 +887,10 @@ briefBtn.className='wbtn'; briefBtn.style.cssText='width:calc(100% - 32px);margi
 briefBtn.textContent='Продолжить →'; briefBtn.onclick=startSteps;
 document.getElementById('brief').appendChild(briefBtn);
 
-// Прайс калькулятора CRM: обновляем цены на карточках и итог. Не загрузился — остаются запасные.
+// Прайс калькулятора CRM — для суммы в заявке (клиенту цены пока не показываем). Не загрузился — запасные.
 fetch('/api/submit-brief?prices=1').then(r=>r.ok?r.json():null).then(d=>{
   if(!d||!Array.isArray(d.services)||!d.services.length)return;
   PRICES=d.services.map(r=>({grp:String(r.grp),name:String(r.name).trim(),price:Number(r.price)||0}));
-  [...STRAT,...VISUAL].forEach(s=>{ if(s._pe) s._pe.textContent=priceText(s); });
-  updateCnt();
 }).catch(()=>{});
 
 setView('welcome');
