@@ -754,7 +754,7 @@ function show(step){
   document.getElementById('hSub').textContent=HEAD[step][1];
   document.getElementById('back').style.display= step? 'block':'none';
   const go=document.getElementById('go'), txt=document.getElementById('goTxt');
-  if(step===LAST_STEP){go.classList.add('send'); txt.textContent='Отправить запрос';}
+  if(step===LAST_STEP){go.classList.add('send'); txt.textContent='Отправить в WhatsApp';}
   else{go.classList.remove('send'); txt.textContent='Далее →';}
   document.getElementById('scr').scrollTo({top:0,behavior:'smooth'});
   renderSteps(); updateCnt();
@@ -814,14 +814,15 @@ function buildText(bold){
   const b=t=>bold?`*${t}*`:t, L=[b('Заявка на брендинг — atmosfera')];
   const qa=list=>list.forEach(x=>L.push('',b(x.q),x.a));
   const brief=collectBrief(), tail=collectBrief('#p3 .qblock');
-  if(brief.length){ L.push('',b('📝 БРИФ')); qa(brief); }
+  if(brief.length){ L.push('',b('БРИФ')); qa(brief); }
   const chosen=[...STRAT.filter((s,i)=>state.sel.has('s'+i)),...VISUAL.filter((s,i)=>state.sel.has('v'+i))]
     .map(s=>s.opts?`${s.n}: ${pick(s).n}`:s.n);
-  if(chosen.length) L.push('',b('🧩 ЧТО НУЖНО'),...chosen.map(n=>'• '+n));
+  if(chosen.length) L.push('',b('ЧТО НУЖНО'),...chosen.map(n=>'• '+n));
   const carriers=carrList();
-  if(carriers.length) L.push('',b('📦 НОСИТЕЛИ'),...carriers.map(n=>'• '+n));
-  if(tail.length){ L.push('',b('📅 СРОКИ И БЮДЖЕТ')); qa(tail); }
-  return L.join('\n');
+  if(carriers.length) L.push('',b('НОСИТЕЛИ'),...carriers.map(n=>'• '+n));
+  if(tail.length){ L.push('',b('СРОКИ И БЮДЖЕТ')); qa(tail); }
+  // эмодзи (из чипов брифа) убираем: ссылка WhatsApp превращает их в «�»
+  return L.join('\n').replace(/[\p{Extended_Pictographic}\u{1F1E6}-\u{1F1FF}️‍]/gu,'').replace(/^ +| +$/gm,'').replace(/ {2,}/g,' ');
 }
 async function copyText(t){
   try{ await navigator.clipboard.writeText(t); return true; }
@@ -831,14 +832,12 @@ async function copyText(t){
     ta.remove(); return ok;
   }
 }
-// sent — заявка дошла до CRM; нет (сервер недоступен) — просим прислать её в WhatsApp
-function showDone(sent){
-  document.getElementById('dTitle').textContent=sent?'Заявка отправлена!':'Почти готово!';
-  document.getElementById('dSub').textContent=sent
-    ?'Скоро свяжемся 🐾 Можно продублировать заявку нам в WhatsApp или сохранить текст себе.'
-    :'Отправьте нам заявку в WhatsApp — одной кнопкой ниже. Или скопируйте текст и пришлите удобным способом.';
+const waLink=()=>WA_URL+'?text='+encodeURIComponent(buildText(true));
+function showDone(){
+  document.getElementById('dTitle').textContent='Заявка готова!';
+  document.getElementById('dSub').textContent='Отправьте её нам в WhatsApp. Если чат не открылся — нажмите кнопку ниже или скопируйте текст и пришлите удобным способом.';
   document.getElementById('dText').textContent=buildText(false);
-  document.getElementById('dWa').href=WA_URL+'?text='+encodeURIComponent(buildText(true));
+  document.getElementById('dWa').href=waLink();
   setView('done');
 }
 const dCopy=document.getElementById('dCopy');
@@ -853,22 +852,18 @@ document.getElementById('dEdit').onclick=()=>{ setView('steps'); show(LAST_STEP)
 
 let lastSent=null; // ту же заявку повторно в CRM не шлём (вернулись «Изменить ответы» и ничего не поменяли)
 const goBtn=document.getElementById('go');
-goBtn.onclick=async ()=>{
+goBtn.onclick=()=>{
   const order=stepOrder(), i=order.indexOf(state.step);
   if(i<order.length-1){ show(order[i+1]); return; }
-  const txt=document.getElementById('goTxt'), old=txt.textContent;
+  // Главное — WhatsApp: открываем прямо в нажатии (после await браузер окно заблокирует), текст — в буфер
+  window.open(waLink(),'_blank');
+  copyText(buildText(false));
+  showDone();
+  // В CRM — молча в фоне: сервер лежит — заявка придёт только в WhatsApp
   const body=JSON.stringify(buildPayload());
-  let sent=body===lastSent;
-  if(!sent){
-    goBtn.style.pointerEvents='none'; txt.textContent='Отправляем…';
-    try{
-      const r=await fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body});
-      sent=r.ok;
-    }catch(e){ sent=false; }
-    finally{ goBtn.style.pointerEvents=''; txt.textContent=old; }
-    if(sent) lastSent=body;
-  }
-  showDone(sent);
+  if(body===lastSent) return;
+  fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body})
+    .then(r=>{ if(r.ok) lastSent=body; }).catch(()=>{});
 };
 
 /* бриф → шаги (+ подстановка сферы в носители) */
