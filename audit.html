@@ -260,13 +260,13 @@ send.onclick=async ()=>{
     const uploaded=[]; const good=attached.filter(f=>!f.err && f.dataB64);
     for(let k=0;k<good.length;k++){
       send.textContent=`Загружаем файл ${k+1}/${good.length}…`;
-      const u=await fetch('/api/upload-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:good[k].name,type:good[k].type,dataB64:good[k].dataB64})});
+      const u=await fetch('https://atm-crm.ru/api/upload-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:good[k].name,type:good[k].type,dataB64:good[k].dataB64})});
       if(u.ok){ const j=await u.json(); if(j.url) uploaded.push({name:good[k].name,url:j.url}); }
     }
     // 2) заявка
     send.textContent='Отправляем…';
     const payload={brief:collectBrief(),company:val('bBrand'),contact,files:uploaded,website:val('hp')};
-    const r=await fetch('/api/submit-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const r=await fetch('https://atm-crm.ru/api/submit-audit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     if(!r.ok) throw new Error(await r.text());
     document.getElementById('modal').classList.add('on');
   }catch(e){ alert('Не удалось отправить 😔 Проверьте интернет и попробуйте ещё раз.'); }

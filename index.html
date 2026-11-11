@@ -415,7 +415,7 @@
           <h2 id="dTitle">Заявка отправлена!</h2>
           <p id="dSub"></p>
         </div>
-        <div class="body">
+        <div class="body" id="dBody">
           <a class="dbtn wa" id="dWa" target="_blank" rel="noopener">💬 Отправить в WhatsApp</a>
           <button class="dbtn" id="dCopy">📋 Скопировать текст</button>
           <div class="dhint">Если в WhatsApp вставилось не всё — текст уже скопирован, просто вставьте его в чат.</div>
@@ -754,7 +754,7 @@ function show(step){
   document.getElementById('hSub').textContent=HEAD[step][1];
   document.getElementById('back').style.display= step? 'block':'none';
   const go=document.getElementById('go'), txt=document.getElementById('goTxt');
-  if(step===LAST_STEP){go.classList.add('send'); txt.textContent='Отправить в WhatsApp';}
+  if(step===LAST_STEP){go.classList.add('send'); txt.textContent='Отправить заявку';}
   else{go.classList.remove('send'); txt.textContent='Далее →';}
   document.getElementById('scr').scrollTo({top:0,behavior:'smooth'});
   renderSteps(); updateCnt();
@@ -807,7 +807,9 @@ function buildPayload(){
   return {brief,services,carriers,total,company:val('bBrand'),contact,website:val('hp')};
 }
 
-/* итог: заявка текстом → WhatsApp / скопировать */
+/* итог: заявка → CRM («Брендинг»); не дошла — текстом в WhatsApp / скопировать */
+// Сервер CRM — полным адресом: бриф открывают и с запасной копии на GitHub, где своего /api нет
+const API='https://atm-crm.ru';
 const WA_URL='https://wa.me/79964206266';
 // bold — звёздочки WhatsApp вокруг заголовков (для ссылки в WhatsApp; на экране и при копировании без них)
 function buildText(bold){
@@ -833,11 +835,20 @@ async function copyText(t){
   }
 }
 const waLink=()=>WA_URL+'?text='+encodeURIComponent(buildText(true));
+// Заявка дошла до CRM — только «спасибо»
+function showSent(){
+  document.getElementById('dTitle').textContent='Заявка отправлена!';
+  document.getElementById('dSub').textContent='Спасибо! Мы получили вашу заявку и скоро с вами свяжемся.';
+  document.getElementById('dBody').style.display='none';
+  setView('done');
+}
+// Сайт заявку не принял — запасной путь: WhatsApp или скопировать текст
 function showDone(){
-  document.getElementById('dTitle').textContent='Заявка готова!';
-  document.getElementById('dSub').textContent='Отправьте её нам в WhatsApp. Если чат не открылся — нажмите кнопку ниже или скопируйте текст и пришлите удобным способом.';
+  document.getElementById('dTitle').textContent='Не получилось отправить';
+  document.getElementById('dSub').textContent='Отправьте заявку нам в WhatsApp — текст уже готов. Или скопируйте его и пришлите удобным способом.';
   document.getElementById('dText').textContent=buildText(false);
   document.getElementById('dWa').href=waLink();
+  document.getElementById('dBody').style.display='';
   setView('done');
 }
 const dCopy=document.getElementById('dCopy');
@@ -850,20 +861,23 @@ dCopy.onclick=async ()=>{
 document.getElementById('dWa').onclick=()=>{ copyText(document.getElementById('dText').textContent); };
 document.getElementById('dEdit').onclick=()=>{ setView('steps'); show(LAST_STEP); };
 
-let lastSent=null; // ту же заявку повторно в CRM не шлём (вернулись «Изменить ответы» и ничего не поменяли)
 const goBtn=document.getElementById('go');
-goBtn.onclick=()=>{
+let sending=false;
+goBtn.onclick=async ()=>{
   const order=stepOrder(), i=order.indexOf(state.step);
   if(i<order.length-1){ show(order[i+1]); return; }
-  // Главное — WhatsApp: открываем прямо в нажатии (после await браузер окно заблокирует), текст — в буфер
-  window.open(waLink(),'_blank');
-  copyText(buildText(false));
-  showDone();
-  // В CRM — молча в фоне: сервер лежит — заявка придёт только в WhatsApp
-  const body=JSON.stringify(buildPayload());
-  if(body===lastSent) return;
-  fetch('/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body})
-    .then(r=>{ if(r.ok) lastSent=body; }).catch(()=>{});
+  if(sending) return;
+  // Главное — CRM, раздел «Брендинг» (как до 04.11). WhatsApp — только если сайт заявку не принял
+  sending=true;
+  const txt=document.getElementById('goTxt'), old=txt.textContent;
+  goBtn.style.pointerEvents='none'; txt.textContent='Отправляем…';
+  let ok=false;
+  try{
+    const r=await fetch(API+'/api/submit-brief',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(buildPayload())});
+    ok=r.ok;
+  }catch(e){}
+  sending=false; goBtn.style.pointerEvents=''; txt.textContent=old;
+  if(ok) showSent(); else showDone();
 };
 
 /* бриф → шаги (+ подстановка сферы в носители) */
@@ -883,7 +897,7 @@ briefBtn.textContent='Продолжить →'; briefBtn.onclick=startSteps;
 document.getElementById('brief').appendChild(briefBtn);
 
 // Прайс калькулятора CRM — для суммы в заявке (клиенту цены пока не показываем). Не загрузился — запасные.
-fetch('/api/submit-brief?prices=1').then(r=>r.ok?r.json():null).then(d=>{
+fetch(API+'/api/submit-brief?prices=1').then(r=>r.ok?r.json():null).then(d=>{
   if(!d||!Array.isArray(d.services)||!d.services.length)return;
   PRICES=d.services.map(r=>({grp:String(r.grp),name:String(r.name).trim(),price:Number(r.price)||0}));
 }).catch(()=>{});
